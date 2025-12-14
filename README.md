@@ -50,7 +50,7 @@ Platform notes (as used by CMakeLists):
 ---
 
 
-## 🛠 Build and Run
+##  Build and Run
 
 Out-of-source builds are strongly recommended. You can use CLion (preferred) or plain CMake.
 
