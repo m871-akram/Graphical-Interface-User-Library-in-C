@@ -9,7 +9,6 @@
 #include "ei_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 // Macro pour max, utilisée dans ei_toplevel.c
 #define max(a, b) ((a) > (b) ? (a) : (b))

@@ -4,8 +4,6 @@
 #include "hw_interface.h"
 #include <assert.h>
 #include <stdlib.h>
-#include <string.h>
-#include "ei_placer.h"
 #include "ei_utils.h"
 
 
@@ -25,17 +23,17 @@ void ei_impl_placer_run(ei_widget_t widget) {
     if (impl_widget->parent != NULL) {
         parent_rect = *(((ei_impl_widget_t*)impl_widget->parent)->content_rect);
     } else {
-        // Root widget: use the size of the root surface
+
         ei_size_t surface_size = hw_surface_get_size(ei_app_root_surface());
         parent_rect.top_left = (ei_point_t){0, 0};
         parent_rect.size = surface_size;
     }
 
-    // Compute position
+
     int pos_x = params->x + (int)(params->rel_x * parent_rect.size.width);
     int pos_y = params->y + (int)(params->rel_y * parent_rect.size.height);
 
-    // Compute size
+
     int final_width, final_height;
     // ... (le reste du calcul de final_width et final_height reste inchangé) ...
     if (params->rel_width > 0.0f) {
@@ -91,12 +89,12 @@ void ei_impl_placer_run(ei_widget_t widget) {
             break;
         case ei_anc_northwest:
         default:
-            // No adjustment needed
+
             break;
     }
 
 
-    // Update screen_location
+
     impl_widget->screen_location.top_left.x = parent_rect.top_left.x + pos_x;
     impl_widget->screen_location.top_left.y = parent_rect.top_left.y + pos_y;
     impl_widget->screen_location.size.width = final_width;
@@ -139,11 +137,11 @@ void ei_place(ei_widget_t widget, ei_anchor_t* anchor, int* x, int* y, int* widt
 
     ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
 
-    // Allocate or update placer_params
+
     if (impl_widget->placer_params == NULL) {
         impl_widget->placer_params = (ei_impl_placer_params_t*)malloc(sizeof(ei_impl_placer_params_t));
         assert(impl_widget->placer_params != NULL && "Failed to allocate placer_params");
-        // Initialize with defaults
+
         impl_widget->placer_params->anchor = ei_anc_northwest;
         impl_widget->placer_params->x = 0;
         impl_widget->placer_params->y = 0;
@@ -157,7 +155,7 @@ void ei_place(ei_widget_t widget, ei_anchor_t* anchor, int* x, int* y, int* widt
 
     ei_impl_placer_params_t* params = impl_widget->placer_params;
 
-    // Update parameters if provided
+
     if (anchor != NULL) params->anchor = *anchor;
     if (x != NULL) params->x = *x;
     if (y != NULL) params->y = *y;
@@ -168,7 +166,7 @@ void ei_place(ei_widget_t widget, ei_anchor_t* anchor, int* x, int* y, int* widt
     if (rel_width != NULL) params->rel_width = *rel_width;
     if (rel_height != NULL) params->rel_height = *rel_height;
 
-    // Compute geometry
+
     ei_impl_placer_run(widget);
 }
 
@@ -178,16 +176,16 @@ void ei_placer_forget(ei_widget_t widget) {
 
     ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
 
-    // Invalidate the current screen_location to clear the widget
+
     ei_app_invalidate_rect(&impl_widget->screen_location);
 
-    // Free placer_params and reset
+
     if (impl_widget->placer_params != NULL) {
         free(impl_widget->placer_params);
         impl_widget->placer_params = NULL;
     }
 
-    // Reset screen_location and content_rect
+
     impl_widget->screen_location = ei_rect_zero();
     if (impl_widget->content_rect != &impl_widget->screen_location) {
         free(impl_widget->content_rect);

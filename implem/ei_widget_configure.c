@@ -12,7 +12,6 @@
 #include "ei_event.h"
 #include "ei_application.h"
 #include <stdio.h>
-#include "ei_implementation.h"
 
 
 #define max(a, b) ((a) > (b) ? (a) : (b))
@@ -37,11 +36,11 @@ void ei_frame_configure(ei_widget_t widget,
                         ei_anchor_t* img_anchor) {
     assert(widget != NULL && "Widget cannot be NULL");
     ei_impl_frame_t* frame = (ei_impl_frame_t*)widget;
-    // assert(strcmp(frame->widget.wclass->name, "frame") == 0 && "Widget must be a frame");
+
 
     bool geometry_changed = false;
 
-    // Update attributes if provided
+
     if (requested_size != NULL) {
         frame->widget.requested_size = *requested_size;
         geometry_changed = true;
@@ -76,7 +75,7 @@ void ei_frame_configure(ei_widget_t widget,
     }
     if (img != NULL) {
         frame->img = *img;
-        frame->text = NULL; // Only one of text or img
+        frame->text = NULL;
         geometry_changed = true;
     }
     if (img_rect != NULL) {
@@ -93,7 +92,7 @@ void ei_frame_configure(ei_widget_t widget,
         frame->img_anchor = *img_anchor;
     }
 
-    // Update requested_size based on text or image
+
     if (geometry_changed) {
         ei_size_t natural_size = frame->widget.requested_size;
         if (frame->text != NULL && frame->text_font != NULL) {
@@ -113,7 +112,7 @@ void ei_frame_configure(ei_widget_t widget,
         frame->widget.requested_size.height = max(frame->widget.requested_size.height, natural_size.height);
     }
 
-    // Recompute geometry if placed
+
     if (geometry_changed && frame->widget.placer_params != NULL) {
         ei_impl_placer_run(widget);
     }
@@ -131,8 +130,7 @@ ei_widget_t frame_allocfunc(void) {
 
 void frame_releasefunc(ei_widget_t widget) {
     ei_impl_frame_t* frame = (ei_impl_frame_t*)widget;
-    // Do not free frame->text here: ownership belongs to the caller in this API.
-    // Free only resources we allocated internally.
+
     if (frame->img_rect != NULL) {
         free(frame->img_rect);
         frame->img_rect = NULL;
@@ -253,24 +251,9 @@ void ei_frame_register_class(void) {
 }
 
 
-//--------------------------------------------------------------------------
 
 
-void ei_button_configure(ei_widget_t widget,
-                         ei_size_t* requested_size,
-                         const ei_color_t* color,
-                         int* border_width,
-                         int* corner_radius,
-                         ei_relief_t* relief,
-                         ei_string_t* text,
-                         ei_font_t* text_font,
-                         ei_color_t* text_color,
-                         ei_anchor_t* text_anchor,
-                         ei_surface_t* img_ptr, // Renommé pour clarifier que c'est un pointeur vers la surface source
-                         ei_rect_ptr_t* img_rect_ptr, // Renommé pour clarifier
-                         ei_anchor_t* img_anchor,
-                         ei_callback_t* callback,
-                         ei_user_param_t* user_param) {
+void ei_button_configure(ei_widget_t widget, ei_size_t* requested_size, const ei_color_t* color, int* border_width, int* corner_radius, ei_relief_t* relief, ei_string_t* text, ei_font_t* text_font, ei_color_t* text_color, ei_anchor_t* text_anchor, ei_surface_t* img_ptr, /* Renommé pour clarifier que c'est un pointeur vers la surface source */ ei_rect_ptr_t* img_rect_ptr, /* Renommé pour clarifier */ ei_anchor_t* img_anchor, ei_callback_t* callback, ei_user_param_t* user_param) {
     assert(widget != NULL && "Widget cannot be NULL");
     ei_impl_button_t* button = (ei_impl_button_t*)widget;
     assert(strcmp(button->widget.wclass->name, "button") == 0 && "Widget must be a button");
@@ -696,7 +679,6 @@ void ei_button_register_class(void) {
     ei_widgetclass_register(&g_button_class_struct);
 }
 
-//----------------------------------------------------------------------------------
 
 void ei_toplevel_configure(ei_widget_t widget,
                            ei_size_t* requested_size,
@@ -741,7 +723,7 @@ void ei_toplevel_configure(ei_widget_t widget,
         toplevel->min_size = **min_size;
     }
 
-    // Recompute geometry if placed
+
     if (geometry_changed && toplevel->widget.placer_params != NULL) {
         ei_impl_placer_run(widget);
     }
@@ -758,8 +740,7 @@ ei_widget_t toplevel_allocfunc(void) {
 
 void toplevel_releasefunc(ei_widget_t widget) {
     ei_impl_toplevel_t* toplevel = (ei_impl_toplevel_t*)widget;
-    // Note: For stability in current build, we avoid freeing title/content_rect here.
-    // Ownership can be clarified later; leaking a few bytes per window is acceptable for tests.
+
     (void)toplevel; // unused if no frees
 }
 

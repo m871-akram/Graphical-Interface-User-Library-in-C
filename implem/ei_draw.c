@@ -172,61 +172,50 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
 }
 
 
-void ei_draw_text(ei_surface_t surface,
-                  const ei_point_t* where,
-                  ei_const_string_t text,
-                  ei_font_t font,
-                  ei_color_t color,
-                  const ei_rect_t* clipper) {
-    // Validate inputs
+void ei_draw_text(ei_surface_t surface, const ei_point_t* where, ei_const_string_t text, ei_font_t font, ei_color_t color, const ei_rect_t* clipper) {
+
     assert(surface != NULL && "Surface cannot be NULL");
     assert(where != NULL && "Position cannot be NULL");
     assert(text != NULL && "Text cannot be NULL");
     assert(color.red != 255 || color.green != 255 || color.blue != 255 || "Color cannot be NULL");
 
-    // Use default font if none provided
+
     ei_font_t font_used = font ? font : ei_default_font;
     if (font_used == NULL) {
         return; // No valid font
     }
 
-    // Ignore alpha channel in color
     ei_color_t text_color = {color.red, color.green, color.blue, 255};
 
-    // Create text surface
     ei_surface_t text_surface = hw_text_create_surface(text, font_used, text_color);
     if (text_surface == NULL) {
         return; // Failed to create text surface
     }
 
-    // Get text surface size
     ei_size_t text_size = hw_surface_get_size(text_surface);
     if (text_size.width <= 0 || text_size.height <= 0) {
         hw_surface_free(text_surface);
         return; // Empty text surface
     }
 
-    // Define destination rectangle
     ei_rect_t dst_rect = {*where, text_size};
 
-    // Apply clipping
     ei_rect_t clipped_dst_rect = dst_rect;
     if (clipper != NULL) {
         if (!intersection_rect(&clipped_dst_rect, &dst_rect, clipper)) {
             hw_surface_free(text_surface);
-            return; // No overlap with clipper
+            return;
         }
     }
 
-    // Define source rectangle (adjusted for clipping)
+
     ei_rect_t src_rect = {{0, 0}, clipped_dst_rect.size};
     src_rect.top_left.x = clipped_dst_rect.top_left.x - dst_rect.top_left.x;
     src_rect.top_left.y = clipped_dst_rect.top_left.y - dst_rect.top_left.y;
 
-    // Copy text surface to destination
     ei_copy_surface(surface, &clipped_dst_rect, text_surface, &src_rect, true);
 
-    // Free text surface
+
     hw_surface_free(text_surface);
 }
 

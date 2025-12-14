@@ -1,21 +1,9 @@
-# 🧩 ProjetC_IG — Graphical Interface Library in C
+#  ProjetC_IG — Graphical Interface Library in C
 
 A lightweight, cross-platform GUI library written in C for building graphical user interfaces.
-This project provides a complete toolkit for creating windows, widgets, drawing, and handling user interactions.
+This project provides a complete toolkit for creating windows, widgets, drawing, and handling user interactions :
 
----
 
-## 🧱 Tech Stack
-
-- Language: C
-- Build system: CMake (min 3.20)
-- Library layout: Static library `ei` + example executables
-- Dependencies (linked in CMake): SDL2, SDL2_ttf, FreeImage, platform shim `eibase` from `./_macos`, `./_x11`, or `./_win`
-- Platforms: macOS, Linux (X11), Windows
-
----
-
-## 🚀 Features
 
 - Cross-platform backend (macOS, Windows, X11/Linux)
 - Widget system (frames, buttons, custom widget classes)
@@ -26,7 +14,7 @@ This project provides a complete toolkit for creating windows, widgets, drawing,
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 .
@@ -45,7 +33,7 @@ This project provides a complete toolkit for creating windows, widgets, drawing,
 
 ---
 
-## ✅ Requirements
+##  Requirements
 
 - CMake ≥ 3.20
 - C compiler: Clang/GCC/MSVC
@@ -61,14 +49,8 @@ Platform notes (as used by CMakeLists):
 
 ---
 
-## ⚙️ Configuration options
 
-- IG_ASAN: enable AddressSanitizer for debug runs.
-   - Use: `cmake -DIG_ASAN=ON ..` (Clang/GCC).
-
----
-
-## 🛠️ Build and Run
+## 🛠 Build and Run
 
 Out-of-source builds are strongly recommended. You can use CLion (preferred) or plain CMake.
 
@@ -95,14 +77,12 @@ cmake --build . --target minimal
 # Run the executable (path from your build dir)
 ./minimal
 ```
+-  Évitez d’exécuter cmake depuis la racine du dépôt car cela peut générer beaucoup de fichiers. Utilisez un répertoire de build séparé (p. ex. `build/`) ou laissez CLion s’en charger. Le répertoire `cmake/` contient des fichiers auxiliaires pour CMake.
 
-Notes:
-- A custom CMake target `ig_all` builds a subset of example apps: `minimal`, `frame`, `button`, `hello_world`, `puzzle`, `two048`, `minesweeper`.
-- A custom target `doc` generates Doxygen documentation.
 
 ---
 
-## ▶️ Entry Points (Executables) and How to Run
+## ▶ Entry Points (Executables) 
 
 All executables are defined under `tests/` and linked against the static library `ei`.
 Build any of them via `cmake --build <build_dir> --target <name>` then run `./<name>` from the build dir.
@@ -126,7 +106,7 @@ Library:
 
 ---
 
-## 📚 API Overview (Headers in `api/`)
+##  API Overview (Headers in `api/`)
 
 - ei_application.h — Application lifecycle management
 - ei_widget.h — Widget creation and hierarchy
@@ -139,21 +119,8 @@ Library:
 
 ---
 
-## 🧪 Tests
 
-There is no separate unit test framework in this repository. The example applications under `tests/` act as manual/system tests. Typical quick checks:
-
-```bash
-cmake --build <build_dir> --target minimal && <build_dir>/minimal
-cmake --build <build_dir> --target hello_world && <build_dir>/hello_world
-cmake --build <build_dir> --target button && <build_dir>/button
-```
-
-If using CLion, select the target and press Run.
-
----
-
-## 📖 Documentation
+##  Documentation
 
 Generate the API documentation using Doxygen (config at `docs/doxygen.cfg`). From project root:
 
@@ -167,42 +134,4 @@ Output will be available at:
 - docs/html/index.html (HTML)
 - docs/latex (LaTeX)
 
----
-
-## 🔧 Environment Variables
-
-Currently, no runtime environment variables are required by the library itself.
-
-Potential platform requirements:
-- Linux/X11 may require a running X server.
-- macOS may require allowing the app to access the display.
-
-Build-time options are provided via CMake cache variables (see IG_ASAN above).
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome. Please:
-- Follow the existing C coding style
-- Keep code portable across macOS/Linux/Windows
-- Update or add example apps to demonstrate new features
-- Update documentation comments for public APIs
-
----
-
-## 📎 Notes for Building
-
-- Prefer out-of-source builds to keep the repository clean.
-- If you use CLion, it manages CMake generation and build directories for you.
-- Legacy note (FR): Évitez d’exécuter cmake depuis la racine du dépôt car cela peut générer beaucoup de fichiers. Utilisez un répertoire de build séparé (p. ex. `build/`) ou laissez CLion s’en charger. Le répertoire `cmake/` contient des fichiers auxiliaires pour CMake.
-
----
-
-
-## 🔗 Additional Resources
-
-- Doxygen config: `docs/doxygen.cfg`
-- Example sources: `tests/`
-- Public headers: `api/`
-- Implementation sources: `implem/`
+ntation sources: `implem/`

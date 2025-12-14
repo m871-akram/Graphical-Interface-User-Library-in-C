@@ -103,7 +103,7 @@ void ei_widget_destroy(ei_widget_t widget) {
 
         while (current != NULL && current != widget) {
             prev_sibling = current;
-            current = ((ei_impl_widget_t*)current)->next_sibling;
+            current = current->next_sibling;
         }
 
         if (current == widget) {
@@ -144,19 +144,18 @@ bool ei_widget_is_displayed(ei_widget_t widget) {
     return ((ei_impl_widget_t*)widget)->placer_params != NULL;
 }
 
-// Helper: depth-first search to find widget by pick color.
 static ei_widget_t find_widget_by_pick_color(ei_widget_t root, const ei_color_t* color) {
     if (root == NULL || color == NULL) return NULL;
     ei_impl_widget_t* impl = (ei_impl_widget_t*)root;
     if (memcmp(&impl->pick_color, color, sizeof(ei_color_t)) == 0) {
         return root;
     }
-    // Traverse children
+
     ei_widget_t child = impl->children_head;
     while (child) {
         ei_widget_t found = find_widget_by_pick_color(child, color);
         if (found) return found;
-        child = ((ei_impl_widget_t*)child)->next_sibling;
+        child = child->next_sibling;
     }
     return NULL;
 }
@@ -198,7 +197,7 @@ ei_widget_t ei_widget_pick(ei_point_t* where) {
     pixel_color.blue = buffer[pixel_offset + ib];
     pixel_color.alpha = (ia >= 0) ? buffer[pixel_offset + ia] : 255; // Opaque si pas de canal alpha
     
-        // Debug: print the pixel color and coordinates
+
         printf("[PICK DEBUG] at (%d,%d): color RGBA=(%d,%d,%d,%d)\n", where->x, where->y, pixel_color.red, pixel_color.green, pixel_color.blue, pixel_color.alpha);
 
     // Déverrouiller la surface

@@ -284,7 +284,7 @@ uint32_t ei_impl_map_rgba(ei_surface_t surface, ei_color_t color)
 bool intersection_rect(ei_rect_t* dest, const ei_rect_t* a, const ei_rect_t* b) {
     assert(dest != NULL && a != NULL &&  b != NULL);
 
-    // Compute the intersection coordinates
+
     int x1 = a->top_left.x > b->top_left.x ? a->top_left.x : b->top_left.x;
     int y1 = a->top_left.y > b->top_left.y ? a->top_left.y : b->top_left.y;
     int x2 = (a->top_left.x + a->size.width) < (b->top_left.x + b->size.width) ?
@@ -292,7 +292,7 @@ bool intersection_rect(ei_rect_t* dest, const ei_rect_t* a, const ei_rect_t* b) 
     int y2 = (a->top_left.y + a->size.height) < (b->top_left.y + b->size.height) ?
              (a->top_left.y + a->size.height) : (b->top_left.y + b->size.height);
 
-    // Check if the intersection is valid
+
     if (x2 > x1 && y2 > y1) {
         dest->top_left.x = x1;
         dest->top_left.y = y1;
@@ -301,7 +301,7 @@ bool intersection_rect(ei_rect_t* dest, const ei_rect_t* a, const ei_rect_t* b) 
         return true;
     }
 
-    // No intersection: set dest to zero rectangle
+
     *dest = (ei_rect_t){{0, 0}, {0, 0}};
     return false;
 }
@@ -311,17 +311,17 @@ void clamp_rect_to_surface(ei_rect_t* rect, ei_surface_t surface) {
     
     ei_size_t surface_size = hw_surface_get_size(surface);
     
-    // Clamp top-left to [0, size-1]
+
     if (rect->top_left.x < 0) {
-        rect->size.width += rect->top_left.x; // Reduce width by the negative offset
+        rect->size.width += rect->top_left.x;
         rect->top_left.x = 0;
     }
     if (rect->top_left.y < 0) {
-        rect->size.height += rect->top_left.y; // Reduce height by the negative offset
+        rect->size.height += rect->top_left.y;
         rect->top_left.y = 0;
     }
     
-    // Clamp size to not exceed surface boundaries
+
     if (rect->top_left.x + rect->size.width > surface_size.width) {
         rect->size.width = surface_size.width - rect->top_left.x;
     }
@@ -329,35 +329,32 @@ void clamp_rect_to_surface(ei_rect_t* rect, ei_surface_t surface) {
         rect->size.height = surface_size.height - rect->top_left.y;
     }
     
-    // Ensure size is not negative
+
     if (rect->size.width < 0) rect->size.width = 0;
     if (rect->size.height < 0) rect->size.height = 0;
 }
 
 
-void ei_impl_widget_draw_children(ei_widget_t widget,
-                                 ei_surface_t surface,
-                                 ei_surface_t pick_surface,
-                                 ei_rect_t* clipper) {
+void ei_impl_widget_draw_children(ei_widget_t widget, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper) {
     assert(widget != NULL && "Widget cannot be NULL");
     assert(surface != NULL && "Surface cannot be NULL");
     assert(pick_surface != NULL && "Pick surface cannot be NULL");
 
-    ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
+    ei_impl_widget_t* impl_widget = widget;
 
-    // Get the parent's content_rect
+
     ei_rect_t parent_content_rect = *impl_widget->content_rect;
 
-    // Traverse all children
+
     ei_widget_t child = impl_widget->children_head;
     while (child != NULL) {
         ei_impl_widget_t* child_impl = (ei_impl_widget_t*)child;
 
-        // Compute the effective clipper: intersection of parent's content_rect and provided clipper
+
         ei_rect_t effective_clipper;
         if (clipper != NULL) {
             if (!intersection_rect(&effective_clipper, &parent_content_rect, clipper)) {
-                // No intersection, skip this child
+
                 child = child_impl->next_sibling;
                 continue;
             }
@@ -365,15 +362,15 @@ void ei_impl_widget_draw_children(ei_widget_t widget,
             effective_clipper = parent_content_rect;
         }
 
-        // Check if child's screen_location intersects with the effective clipper
+
         ei_rect_t child_rect = child_impl->screen_location;
         ei_rect_t intersection;
         if (intersection_rect(&intersection, &child_rect, &effective_clipper)) {
-            // Draw the child using its drawfunc
+
             child_impl->wclass->drawfunc(child, surface, pick_surface, &intersection);
         }
 
-        // Move to the next sibling
+
         child = child_impl->next_sibling;
     }
 }

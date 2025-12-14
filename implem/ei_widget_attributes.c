@@ -43,7 +43,7 @@ void* ei_widget_get_user_data(ei_widget_t widget) {
 
 const ei_size_t* ei_widget_get_requested_size(ei_widget_t widget) {
     assert(widget != NULL && "hmm , un widget NULL !! ");
-    return &((ei_impl_widget_t*)widget)->requested_size;
+    return &widget->requested_size;
 }
 
 

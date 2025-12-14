@@ -4,7 +4,6 @@
 #include "ei_draw.h"
 #include "ei_types.h"
 #include "ei_relief.h"
-#include "ei_implementation.h"
 #include <assert.h>
 
 
