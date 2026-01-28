@@ -27,10 +27,11 @@ ei_point_t* arc(ei_point_t centre, float rayon, float angle_deb, float angle_fin
 /**
  * \brief une enumeration pour savoir quel partie de frame prendre
  */
-typedef enum {
- FRAME_FULL,       // Tout le cadre, on prend tout !
- FRAME_TOP,       // Juste le haut, pour un style partiel
- FRAME_BOTTOM,    // Juste le bas, pareil mais en bas
+typedef enum
+{
+    FRAME_FULL, // Tout le cadre, on prend tout !
+    FRAME_TOP, // Juste le haut, pour un style partiel
+    FRAME_BOTTOM, // Juste le bas, pareil mais en bas
 } ei_frame_part_t;
 
 /**
@@ -44,10 +45,11 @@ typedef enum {
 ei_point_t* rounded_frame(ei_rect_t* rect, float rayon, size_t* count, ei_frame_part_t part);
 
 // Une petite structure pour organiser le dessin
-typedef struct {
- ei_frame_part_t part; // Quelle partie on dessine
- ei_color_t color; // La couleur, pour que ça pète
- ei_rect_t* clipper; // Le clipper, pour pas déborder
+typedef struct
+{
+    ei_frame_part_t part; // Quelle partie on dessine
+    ei_color_t color; // La couleur, pour que ça pète
+    ei_rect_t* clipper; // Le clipper, pour pas déborder
 } dessin_frame;
 
 /**

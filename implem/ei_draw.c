@@ -17,36 +17,38 @@ void ei_fill(ei_surface_t surface, const ei_color_t* couleur, const ei_rect_t* c
 
     // On définit la zone qu'on va remplir (le clipper, c'est comme une fenêtre où on a le droit de peindre)
     int clip_xmin = 0, clip_ymin = 0, clip_xmax = taille_surface.width - 1, clip_ymax = taille_surface.height - 1;
-    if (clipper != NULL) {
+    if (clipper != NULL)
+    {
         clip_xmin = clipper->top_left.x;
         clip_ymin = clipper->top_left.y;
         clip_xmax = clip_xmin + clipper->size.width - 1;
         clip_ymax = clip_ymin + clipper->size.height - 1;
     }
-    
+
     // Clamp to surface boundaries to prevent buffer overflow
     if (clip_xmin < 0) clip_xmin = 0;
     if (clip_ymin < 0) clip_ymin = 0;
     if (clip_xmax >= taille_surface.width) clip_xmax = taille_surface.width - 1;
     if (clip_ymax >= taille_surface.height) clip_ymax = taille_surface.height - 1;
-    
+
     // Early exit if clipping region is invalid
-    if (clip_xmin > clip_xmax || clip_ymin > clip_ymax) {
+    if (clip_xmin > clip_xmax || clip_ymin > clip_ymax)
+    {
         return;
     }
 
     // On remplit juste la zone du clipper, ligne par ligne
-    for (int y = clip_ymin; y <= clip_ymax; y++) {
+    for (int y = clip_ymin; y <= clip_ymax; y++)
+    {
         // On trouve le début de la ligne
         uint8_t* ptr_ligne = pixel_0 + (y * taille_surface.width * 4) + (clip_xmin * 4);
         uint32_t* ptr_pixel = (uint32_t*)ptr_ligne;
         // On colore chaque pixel de la ligne
-        for (int x = clip_xmin; x <= clip_xmax; x++) {
+        for (int x = clip_xmin; x <= clip_xmax; x++)
+        {
             *ptr_pixel++ = valeur_pixel;
         }
     }
-
-
 }
 
 // Dessine une polyligne (une série de lignes connectées, comme un chemin)
@@ -57,11 +59,15 @@ void ei_draw_polyline(ei_surface_t surface, ei_point_t* points, size_t taille_po
     if (taille_points == 0) return;
 
     // Juste un point ? On dessine un point (une ligne qui va nulle part)
-    if (taille_points == 1) {
+    if (taille_points == 1)
+    {
         draw_line(surface, points[0], points[0], couleur, clipper);
-    } else {
+    }
+    else
+    {
         // Plusieurs points ? On dessine une ligne entre chaque paire
-        for (size_t i = 0; i < taille_points - 1; i++) {
+        for (size_t i = 0; i < taille_points - 1; i++)
+        {
             draw_line(surface, points[i], points[i + 1], couleur, clipper);
         }
     }
@@ -80,17 +86,21 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
     // On cherche les y minimum et maximum du polygone
     int y_min = points[0].y;
     int y_max = points[0].y;
-    for (size_t i = 1; i < taille_points; i++) {
+    for (size_t i = 1; i < taille_points; i++)
+    {
         if (points[i].y < y_min) y_min = points[i].y;
         if (points[i].y > y_max) y_max = points[i].y;
     }
 
     // On ajuste les limites pour pas dessiner n’importe où
     int clip_ymin = y_min, clip_ymax = y_max;
-    if (clipper != NULL) {
+    if (clipper != NULL)
+    {
         // On prend le max/min entre le clipper et le polygone
         clip_ymin = (clip_ymin > clipper->top_left.y) ? clip_ymin : clipper->top_left.y;
-        clip_ymax = (clip_ymax < (clipper->top_left.y + clipper->size.height)) ? clip_ymax : (clipper->top_left.y + clipper->size.height);
+        clip_ymax = (clip_ymax < (clipper->top_left.y + clipper->size.height))
+                        ? clip_ymax
+                        : (clipper->top_left.y + clipper->size.height);
     }
     clip_ymin = (clip_ymin > 0) ? clip_ymin : 0;
     clip_ymax = (clip_ymax < taille_surface.height) ? clip_ymax : (taille_surface.height);
@@ -103,7 +113,7 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
     int table_size = clip_ymax - clip_ymin + 1;
     edge_t** table_cotes = calloc(table_size, sizeof(edge_t*));
     if (!table_cotes) return; // Si allocation échoue, on sort
-    
+
     // On remplit la table avec les arêtes du polygone
     creer_table_tc(points, taille_points, table_cotes, clip_ymin, clip_ymax);
 
@@ -111,15 +121,18 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
     edge_t* tca = NULL;
 
     // On boucle sur chaque ligne (scanline) de y_min à y_max
-    for (int y = clip_ymin; y <= clip_ymax; y++) {
+    for (int y = clip_ymin; y <= clip_ymax; y++)
+    {
         // On vire les arêtes qui se terminent à cette ligne
         supprimer_arete_tca(y, &tca);
 
         // On ajoute les nouvelles arêtes qui commencent à cette ligne
         int table_index = y - clip_ymin;
-        if (table_index >= 0 && table_index < table_size) {
+        if (table_index >= 0 && table_index < table_size)
+        {
             edge_t* cote = table_cotes[table_index];
-            while (cote != NULL) {
+            while (cote != NULL)
+            {
                 edge_t* next = cote->next;
                 ajoute_arete_tca(cote, &tca); // On met l'arête dans la TCA
                 cote = next;
@@ -132,13 +145,15 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
 
         // On remplit les bouts entre les arêtes (ça fait le polygone !)
         edge_t* courant = tca;
-        while (courant != NULL && courant->next != NULL) {
+        while (courant != NULL && courant->next != NULL)
+        {
             // On trouve les x de début et de fin pour cette ligne
             int x_debut = (int)ceilf(courant->x);
             int x_fin = (int)floorf(courant->next->x);
 
             // S’il y a quelque chose à dessiner, on trace une ligne horizontale
-            if (x_debut <= x_fin) {
+            if (x_debut <= x_fin)
+            {
                 draw_horizontal_line(surface, x_debut, x_fin, y, couleur, clipper);
             }
             courant = courant->next->next; // On passe au prochain couple
@@ -146,22 +161,26 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
 
         // On met à jour les x pour la ligne suivante
         courant = tca;
-        while (courant != NULL) {
+        while (courant != NULL)
+        {
             courant->x += courant->inv_m;
             courant = courant->next;
         }
     }
 
     // On nettoie la TCA (on libère la mémoire avec free, merci <stdlib.h> !)
-    while (tca != NULL) {
+    while (tca != NULL)
+    {
         edge_t* u = tca;
         tca = tca->next;
         free(u);
     }
     // On nettoie aussi la table des côtés
-    for (int i = 0; i < table_size; i++) {
+    for (int i = 0; i < table_size; i++)
+    {
         edge_t* cote = table_cotes[i];
-        while (cote != NULL) {
+        while (cote != NULL)
+        {
             edge_t* u = cote;
             cote = cote->next;
             free(u);
@@ -172,8 +191,9 @@ void ei_draw_polygon(ei_surface_t surface, ei_point_t* points, size_t taille_poi
 }
 
 
-void ei_draw_text(ei_surface_t surface, const ei_point_t* where, ei_const_string_t text, ei_font_t font, ei_color_t color, const ei_rect_t* clipper) {
-
+void ei_draw_text(ei_surface_t surface, const ei_point_t* where, ei_const_string_t text, ei_font_t font,
+                  ei_color_t color, const ei_rect_t* clipper)
+{
     assert(surface != NULL && "Surface cannot be NULL");
     assert(where != NULL && "Position cannot be NULL");
     assert(text != NULL && "Text cannot be NULL");
@@ -181,19 +201,22 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, ei_const_string
 
 
     ei_font_t font_used = font ? font : ei_default_font;
-    if (font_used == NULL) {
+    if (font_used == NULL)
+    {
         return; // No valid font
     }
 
     ei_color_t text_color = {color.red, color.green, color.blue, 255};
 
     ei_surface_t text_surface = hw_text_create_surface(text, font_used, text_color);
-    if (text_surface == NULL) {
+    if (text_surface == NULL)
+    {
         return; // Failed to create text surface
     }
 
     ei_size_t text_size = hw_surface_get_size(text_surface);
-    if (text_size.width <= 0 || text_size.height <= 0) {
+    if (text_size.width <= 0 || text_size.height <= 0)
+    {
         hw_surface_free(text_surface);
         return; // Empty text surface
     }
@@ -201,8 +224,10 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, ei_const_string
     ei_rect_t dst_rect = {*where, text_size};
 
     ei_rect_t clipped_dst_rect = dst_rect;
-    if (clipper != NULL) {
-        if (!intersection_rect(&clipped_dst_rect, &dst_rect, clipper)) {
+    if (clipper != NULL)
+    {
+        if (!intersection_rect(&clipped_dst_rect, &dst_rect, clipper))
+        {
             hw_surface_free(text_surface);
             return;
         }
@@ -224,9 +249,11 @@ int ei_copy_surface(ei_surface_t destination,
                     const ei_rect_t* dst_rect,
                     ei_surface_t source,
                     const ei_rect_t* src_rect,
-                    bool alpha) {
+                    bool alpha)
+{
     // Validate inputs
-    if (destination == NULL || source == NULL) {
+    if (destination == NULL || source == NULL)
+    {
         return 1;
     }
 
@@ -235,17 +262,33 @@ int ei_copy_surface(ei_surface_t destination,
     ei_size_t src_size = hw_surface_get_size(source);
 
     // Default to entire surfaces if rectangles are NULL
-    ei_rect_t dst_rect_real = dst_rect ? *dst_rect : (ei_rect_t){{0, 0}, dst_size};
-    ei_rect_t src_rect_real = src_rect ? *src_rect : (ei_rect_t){{0, 0}, src_size};
+    ei_rect_t dst_rect_real = dst_rect ? *dst_rect : (ei_rect_t)
+    {
+        {
+            0, 0
+        }
+        ,
+        dst_size
+    };
+    ei_rect_t src_rect_real = src_rect ? *src_rect : (ei_rect_t)
+    {
+        {
+            0, 0
+        }
+        ,
+        src_size
+    };
 
     // Check rectangle sizes match
     if (dst_rect_real.size.width != src_rect_real.size.width ||
-        dst_rect_real.size.height != src_rect_real.size.height) {
+        dst_rect_real.size.height != src_rect_real.size.height)
+    {
         return 1;
     }
 
     // Check for empty or invalid rectangles
-    if (dst_rect_real.size.width <= 0 || dst_rect_real.size.height <= 0) {
+    if (dst_rect_real.size.width <= 0 || dst_rect_real.size.height <= 0)
+    {
         return 0;
     }
 
@@ -255,7 +298,8 @@ int ei_copy_surface(ei_surface_t destination,
         dst_rect_real.top_left.y + dst_rect_real.size.height > dst_size.height ||
         src_rect_real.top_left.x < 0 || src_rect_real.top_left.y < 0 ||
         src_rect_real.top_left.x + src_rect_real.size.width > src_size.width ||
-        src_rect_real.top_left.y + src_rect_real.size.height > src_size.height) {
+        src_rect_real.top_left.y + src_rect_real.size.height > src_size.height)
+    {
         return 1;
     }
 
@@ -273,23 +317,29 @@ int ei_copy_surface(ei_surface_t destination,
     // Assume 32-bit RGBA (4 bytes per pixel)
     const int bytes_per_pixel = 4;
 
-    if (!alpha) {
+    if (!alpha)
+    {
         // Direct copy with memcpy for each row
-        for (int y = 0; y < dst_rect_real.size.height; y++) {
+        for (int y = 0; y < dst_rect_real.size.height; y++)
+        {
             uint8_t* dst_row = dst_buffer + ((dst_rect_real.top_left.y + y) * dst_size.width +
-                                            dst_rect_real.top_left.x) * bytes_per_pixel;
+                dst_rect_real.top_left.x) * bytes_per_pixel;
             uint8_t* src_row = src_buffer + ((src_rect_real.top_left.y + y) * src_size.width +
-                                            src_rect_real.top_left.x) * bytes_per_pixel;
+                src_rect_real.top_left.x) * bytes_per_pixel;
             memcpy(dst_row, src_row, dst_rect_real.size.width * bytes_per_pixel);
         }
-    } else {
+    }
+    else
+    {
         // Alpha blending
-        for (int y = 0; y < dst_rect_real.size.height; y++) {
+        for (int y = 0; y < dst_rect_real.size.height; y++)
+        {
             uint8_t* dst_row = dst_buffer + ((dst_rect_real.top_left.y + y) * dst_size.width +
-                                            dst_rect_real.top_left.x) * bytes_per_pixel;
+                dst_rect_real.top_left.x) * bytes_per_pixel;
             uint8_t* src_row = src_buffer + ((src_rect_real.top_left.y + y) * src_size.width +
-                                            src_rect_real.top_left.x) * bytes_per_pixel;
-            for (int x = 0; x < dst_rect_real.size.width; x++) {
+                src_rect_real.top_left.x) * bytes_per_pixel;
+            for (int x = 0; x < dst_rect_real.size.width; x++)
+            {
                 uint8_t* dst_pixel = dst_row + x * bytes_per_pixel;
                 uint8_t* src_pixel = src_row + x * bytes_per_pixel;
 
@@ -302,7 +352,8 @@ int ei_copy_surface(ei_surface_t destination,
                 dst_pixel[dst_ib] = (uint8_t)(alpha_norm * src_pixel[src_ib] + (1.0f - alpha_norm) * dst_pixel[dst_ib]);
 
                 // Set destination alpha to opaque if channel exists
-                if (dst_ia >= 0) {
+                if (dst_ia >= 0)
+                {
                     dst_pixel[dst_ia] = 255;
                 }
             }

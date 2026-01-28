@@ -8,7 +8,8 @@
 
 
 // Dans ei_placer.c
-void ei_impl_placer_run(ei_widget_t widget) {
+void ei_impl_placer_run(ei_widget_t widget)
+{
     ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
     assert(impl_widget->placer_params != NULL && "hmm , pas de placer_params");
 
@@ -20,12 +21,17 @@ void ei_impl_placer_run(ei_widget_t widget) {
 
     // Get parent’s content_rect (or root surface size for root widget)
     ei_rect_t parent_rect;
-    if (impl_widget->parent != NULL) {
+    if (impl_widget->parent != NULL)
+    {
         parent_rect = *(((ei_impl_widget_t*)impl_widget->parent)->content_rect);
-    } else {
-
+    }
+    else
+    {
         ei_size_t surface_size = hw_surface_get_size(ei_app_root_surface());
-        parent_rect.top_left = (ei_point_t){0, 0};
+        parent_rect.top_left = (ei_point_t)
+        {
+            0, 0
+        };
         parent_rect.size = surface_size;
     }
 
@@ -36,63 +42,73 @@ void ei_impl_placer_run(ei_widget_t widget) {
 
     int final_width, final_height;
     // ... (le reste du calcul de final_width et final_height reste inchangé) ...
-    if (params->rel_width > 0.0f) {
+    if (params->rel_width > 0.0f)
+    {
         final_width = (int)(params->rel_width * parent_rect.size.width);
-    } else if (params->width > 0) {
+    }
+    else if (params->width > 0)
+    {
         final_width = params->width;
-    } else {
+    }
+    else
+    {
         final_width = impl_widget->requested_size.width;
         // Si requested_size est aussi 0, la taille par défaut de la classe devrait déjà
         // être dans requested_size via setdefaultsfunc.
         // Si elle est toujours 0, c'est que le widget n'a pas de taille intrinsèque (ex: frame vide sans bordure).
     }
 
-    if (params->rel_height > 0.0f) {
+    if (params->rel_height > 0.0f)
+    {
         final_height = (int)(params->rel_height * parent_rect.size.height);
-    } else if (params->height > 0) {
+    }
+    else if (params->height > 0)
+    {
         final_height = params->height;
-    } else {
+    }
+    else
+    {
         final_height = impl_widget->requested_size.height;
     }
 
 
     // Adjust position based on anchor
     // ... (le switch pour l'ancre reste inchangé) ...
-    switch (params->anchor) {
-        case ei_anc_center:
-            pos_x -= final_width / 2;
-            pos_y -= final_height / 2;
-            break;
-        case ei_anc_north:
-            pos_x -= final_width / 2;
-            break;
-        case ei_anc_northeast:
-            pos_x -= final_width;
-            break;
-        case ei_anc_east:
-            pos_x -= final_width;
-            pos_y -= final_height / 2;
-            break;
-        case ei_anc_southeast:
-            pos_x -= final_width;
-            pos_y -= final_height;
-            break;
-        case ei_anc_south:
-            pos_x -= final_width / 2;
-            pos_y -= final_height;
-            break;
-        case ei_anc_southwest:
-            pos_y -= final_height;
-            break;
-        case ei_anc_west:
-            pos_y -= final_height / 2;
-            break;
-        case ei_anc_northwest:
-        default:
+    switch (params->anchor)
+    {
+    case ei_anc_center:
+        pos_x -= final_width / 2;
+        pos_y -= final_height / 2;
+        break;
+    case ei_anc_north:
+        pos_x -= final_width / 2;
+        break;
+    case ei_anc_northeast:
+        pos_x -= final_width;
+        break;
+    case ei_anc_east:
+        pos_x -= final_width;
+        pos_y -= final_height / 2;
+        break;
+    case ei_anc_southeast:
+        pos_x -= final_width;
+        pos_y -= final_height;
+        break;
+    case ei_anc_south:
+        pos_x -= final_width / 2;
+        pos_y -= final_height;
+        break;
+    case ei_anc_southwest:
+        pos_y -= final_height;
+        break;
+    case ei_anc_west:
+        pos_y -= final_height / 2;
+        break;
+    case ei_anc_northwest:
+    default:
 
-            break;
+        break;
     }
-
 
 
     impl_widget->screen_location.top_left.x = parent_rect.top_left.x + pos_x;
@@ -111,7 +127,8 @@ void ei_impl_placer_run(ei_widget_t widget) {
     //     impl_widget->wclass->geomnotifyfunc(widget);
     //     impl_widget->geomnotify_in_progress = false;
     // }
-    if (impl_widget->wclass && impl_widget->wclass->geomnotifyfunc) {
+    if (impl_widget->wclass && impl_widget->wclass->geomnotifyfunc)
+    {
         impl_widget->wclass->geomnotifyfunc(widget);
     }
     // Si `geomnotifyfunc` a mis à jour la géométrie des enfants,
@@ -121,24 +138,28 @@ void ei_impl_placer_run(ei_widget_t widget) {
     // (si elles sont différentes et valides)
     if (old_screen_location.size.width > 0 && old_screen_location.size.height > 0 &&
         (old_screen_location.top_left.x != impl_widget->screen_location.top_left.x ||
-         old_screen_location.top_left.y != impl_widget->screen_location.top_left.y ||
-         old_screen_location.size.width != impl_widget->screen_location.size.width ||
-         old_screen_location.size.height != impl_widget->screen_location.size.height)) {
+            old_screen_location.top_left.y != impl_widget->screen_location.top_left.y ||
+            old_screen_location.size.width != impl_widget->screen_location.size.width ||
+            old_screen_location.size.height != impl_widget->screen_location.size.height))
+    {
         ei_app_invalidate_rect(&old_screen_location);
     }
-    if (impl_widget->screen_location.size.width > 0 && impl_widget->screen_location.size.height > 0) {
+    if (impl_widget->screen_location.size.width > 0 && impl_widget->screen_location.size.height > 0)
+    {
         ei_app_invalidate_rect(&impl_widget->screen_location);
     }
 }
 
 void ei_place(ei_widget_t widget, ei_anchor_t* anchor, int* x, int* y, int* width, int* height,
-              float* rel_x, float* rel_y, float* rel_width, float* rel_height) {
+              float* rel_x, float* rel_y, float* rel_width, float* rel_height)
+{
     assert(widget != NULL && "Widget cannot be NULL");
 
     ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
 
 
-    if (impl_widget->placer_params == NULL) {
+    if (impl_widget->placer_params == NULL)
+    {
         impl_widget->placer_params = (ei_impl_placer_params_t*)malloc(sizeof(ei_impl_placer_params_t));
         assert(impl_widget->placer_params != NULL && "Failed to allocate placer_params");
 
@@ -171,7 +192,8 @@ void ei_place(ei_widget_t widget, ei_anchor_t* anchor, int* x, int* y, int* widt
 }
 
 
-void ei_placer_forget(ei_widget_t widget) {
+void ei_placer_forget(ei_widget_t widget)
+{
     assert(widget != NULL && "Widget cannot be NULL");
 
     ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
@@ -180,16 +202,17 @@ void ei_placer_forget(ei_widget_t widget) {
     ei_app_invalidate_rect(&impl_widget->screen_location);
 
 
-    if (impl_widget->placer_params != NULL) {
+    if (impl_widget->placer_params != NULL)
+    {
         free(impl_widget->placer_params);
         impl_widget->placer_params = NULL;
     }
 
 
     impl_widget->screen_location = ei_rect_zero();
-    if (impl_widget->content_rect != &impl_widget->screen_location) {
+    if (impl_widget->content_rect != &impl_widget->screen_location)
+    {
         free(impl_widget->content_rect);
         impl_widget->content_rect = &impl_widget->screen_location;
     }
 }
-
