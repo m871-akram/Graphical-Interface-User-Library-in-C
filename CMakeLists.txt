@@ -23,14 +23,27 @@ endif(IG_ASAN)
 
 # Platform specific definitions
 
-if(${APPLE})
-	set(HEADER_DIRS			${HEADER_DIRS}
-					"/opt/local/include/SDL2"
-					"/opt/local/include")
-	set(PLATFORM_DIR		"${ROOT_DIR}/_macos")
-	set(PLATFORM_LIB_FLAGS		eibase -L/opt/local/lib ${LIB_FLAGS})
+#if(${APPLE})
+#	set(HEADER_DIRS			${HEADER_DIRS}
+#					"/opt/local/include/SDL2"
+#					"/opt/local/include")
+#	set(PLATFORM_DIR		"${ROOT_DIR}/_macos")
+#	set(PLATFORM_LIB_FLAGS		eibase -L/opt/local/lib ${LIB_FLAGS})
+#
+#	message(STATUS "Building for MacOS")
 
-	message(STATUS "Building for MacOS")
+if(${APPLE})
+	# --- MODIFICATION POUR HOMEBREW (Mac M1/M2/M3) ---
+	set(HEADER_DIRS          ${HEADER_DIRS}
+			"/opt/homebrew/include/SDL2"  # Pour trouver SDL.h et SDL_keycode.h
+			"/opt/homebrew/include")      # Pour les autres libs
+
+	set(PLATFORM_DIR      "${ROOT_DIR}/_macos")
+
+	# On remplace -L/opt/local/lib par -L/opt/homebrew/lib
+	set(PLATFORM_LIB_FLAGS    eibase -L/opt/homebrew/lib ${LIB_FLAGS})
+
+	message(STATUS "Building for MacOS (Homebrew / Apple Silicon)")
 
 elseif(${UNIX})
 
