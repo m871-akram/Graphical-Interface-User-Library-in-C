@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="ProjetC_IG" targetName="dessin_relief" />
+      <config projectName="ProjetC_IG" targetName="la_souris_verte" />
+      <config projectName="ProjetC_IG" targetName="ext_testclass" />
+      <config projectName="ProjetC_IG" targetName="ei" />
+      <config projectName="ProjetC_IG" targetName="two048" />
+      <config projectName="ProjetC_IG" targetName="minimal" />
+      <config projectName="ProjetC_IG" targetName="lines" />
+      <config projectName="ProjetC_IG" targetName="minesweeper" />
+      <config projectName="ProjetC_IG" targetName="button" />
+      <config projectName="ProjetC_IG" targetName="testclass" />
+      <config projectName="ProjetC_IG" targetName="hello_world" />
+      <config projectName="ProjetC_IG" targetName="ig_all" />
+      <config projectName="ProjetC_IG" targetName="test_d_sor3a" />
+      <config projectName="ProjetC_IG" targetName="doc" />
+      <config projectName="ProjetC_IG" targetName="puzzle" />
+      <config projectName="ProjetC_IG" targetName="frame" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_CXX_FLAGS=&quot;-fsanitize=address -g -fno-omit-frame-pointer&quot; -DCMAKE_C_FLAGS=&quot;-fsanitize=address -g -fno-omit-frame-pointer&quot;" />
+      <configuration PROFILE_NAME="Debug-Coverage" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_CXX_FLAGS=&quot;-fcoverage-mapping -fprofile-instr-generate -fsanitize=address -g -fno-omit-frame-pointer&quot; -DCMAKE_C_FLAGS=&quot;-fcoverage-mapping -fprofile-instr-generate -fsanitize=address -g -fno-omit-frame-pointer&quot;" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e27fc836-d331-4e1a-a5c9-dfec16a33502" name="Changes" comment="Update CMakeLists.txt for Homebrew support on MacOS">
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/implem/ei_widget_configure.c" beforeDir="false" afterPath="$PROJECT_DIR$/implem/ei_widget_configure.c" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/mohammedakramlrhorfi/CLionProjects/Graphical-Interface-User-Library-in-C" value="39QHvoMt2TRdA5qU6JgBcUTtzRc" />
+    </persistenceIdMap>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="673" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-Coverage" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "m871-akram"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/m871-akram/Graphical-Interface-User-Library-in-C.git",
+    "accountId": "62a1238a-d10e-4e3b-911f-74be703461ab"
+  }
+}]]></component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="WtGyQOHr" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="39QHvoMt2TRdA5qU6JgBcUTtzRc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "C/C++ File.hello_world.c.executor": "Run",
+    "C/C++ File.scratch.c (1).executor": "Run",
+    "C/C++ File.scratch.c (2).executor": "Run",
+    "C/C++ File.scratch.c.executor": "Run",
+    "CMake Application.ext_testclass.executor": "Run",
+    "CMake Application.hello_world.executor": "Coverage",
+    "CMake Application.minesweeper.executor": "Run",
+    "CMake Application.puzzle.executor": "Run",
+    "CMake Application.two048.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "master",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Users/mohammedakramlrhorfi/CLionProjects/Graphical-Interface-User-Library-in-C",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "dynamic.analysis.tools.sanitizers",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "/Users/mohammedakramlrhorfi/Applications/CLion.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1772528432460" />
+    <option name="spentUsd" value="0.037732" />
+  </component>
+  <component name="RecapUselessUpdatesCounter">
+    <option name="suspendCountdown" value="8" />
+  </component>
+  <component name="RunManager" selected="CMake Application.hello_world">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ext_testclass" type="CMakeRunConfiguration" factoryName="Application" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="ext_testclass" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ProjetC_IG" RUN_TARGET_NAME="ext_testclass">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="hello_world" type="CMakeRunConfiguration" factoryName="Application" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="hello_world" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ProjetC_IG" RUN_TARGET_NAME="hello_world">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="minesweeper" type="CMakeRunConfiguration" factoryName="Application" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="minesweeper" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ProjetC_IG" RUN_TARGET_NAME="minesweeper">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="puzzle" type="CMakeRunConfiguration" factoryName="Application" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="puzzle" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ProjetC_IG" RUN_TARGET_NAME="puzzle">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="testclass" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="testclass" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="two048" type="CMakeRunConfiguration" factoryName="Application" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="two048" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ProjetC_IG" RUN_TARGET_NAME="two048">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="hello_world.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="hello_world.c" CONFIG_NAME="hello_world.c">
+      <option name="sourceFile" value="tests/hello_world.c" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="C/C++ File.hello_world.c" />
+      <item itemvalue="CMake Application.testclass" />
+      <item itemvalue="CMake Application.ext_testclass" />
+      <item itemvalue="CMake Application.minesweeper" />
+      <item itemvalue="CMake Application.two048" />
+      <item itemvalue="CMake Application.puzzle" />
+      <item itemvalue="CMake Application.hello_world" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="CMake Application.hello_world" />
+        <item itemvalue="CMake Application.puzzle" />
+        <item itemvalue="CMake Application.ext_testclass" />
+        <item itemvalue="CMake Application.two048" />
+        <item itemvalue="CMake Application.minesweeper" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e27fc836-d331-4e1a-a5c9-dfec16a33502" name="Changes" comment="" />
+      <created>1765721696235</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1765721696235</updated>
+      <workItem from="1765721696758" duration="135000" />
+      <workItem from="1769596744749" duration="328000" />
+      <workItem from="1769597499394" duration="28000" />
+      <workItem from="1769597548899" duration="919000" />
+      <workItem from="1770577578551" duration="962000" />
+      <workItem from="1770578556451" duration="265000" />
+      <workItem from="1770581936332" duration="768000" />
+      <workItem from="1770621609589" duration="2546000" />
+    </task>
+    <task id="LOCAL-00001" summary="Add initial project files and update test log timestamps">
+      <option name="closed" value="true" />
+      <created>1769597011489</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1769597011489</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update CMakeLists.txt for Homebrew support on MacOS">
+      <option name="closed" value="true" />
+      <created>1770582326348</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1770582326348</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add initial project files and update test log timestamps" />
+    <MESSAGE value="Update CMakeLists.txt for Homebrew support on MacOS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update CMakeLists.txt for Homebrew support on MacOS" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="../../../../CLionProjects/Graphical-Interface-User-Library-in-C/cmake-build-debug-coverage" NAME="hello_world Coverage Results" MODIFIED="1770624217696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="../../../../CLionProjects/Graphical-Interface-User-Library-in-C/cmake-build-debug-coverage" NAME="hello_world Coverage Results" MODIFIED="1770582667204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

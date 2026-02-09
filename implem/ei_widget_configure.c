@@ -1035,11 +1035,12 @@ void toplevel_drawfunc(ei_widget_t widget, ei_surface_t surface, ei_surface_t pi
         }
     }
 
-    // Dessiner la barre de titre
-    if (intersection_rect(&toplevel->title_bar_rect, &toplevel->title_bar_rect, &draw_rect))
+    // Dessiner la barre de titre (utiliser une variable locale pour ne pas corrompre title_bar_rect)
+    ei_rect_t visible_title_bar;
+    if (intersection_rect(&visible_title_bar, &toplevel->title_bar_rect, &draw_rect))
     {
         ei_color_t title_bar_color = {0x80, 0x80, 0x80, 0xff};
-        ei_fill(surface, &title_bar_color, &toplevel->title_bar_rect);
+        ei_fill(surface, &title_bar_color, &visible_title_bar);
         if (toplevel->title)
         {
             int text_width, text_height;
@@ -1049,12 +1050,13 @@ void toplevel_drawfunc(ei_widget_t widget, ei_surface_t surface, ei_surface_t pi
             if (toplevel->closable) text_pos.x += TOPLEVEL_DECORATION_SIZE + 2;
             text_pos.y = toplevel->title_bar_rect.top_left.y + (toplevel->title_bar_rect.size.height - text_height) / 2;
             ei_draw_text(surface, &text_pos, toplevel->title, ei_default_font, ei_font_default_color,
-                         &toplevel->title_bar_rect);
+                         &visible_title_bar);
         }
     }
 
-    // Dessiner le bouton de fermeture
-    if (toplevel->closable && intersection_rect(&toplevel->close_button_rect, &toplevel->close_button_rect, &draw_rect))
+    // Dessiner le bouton de fermeture (utiliser une variable locale pour ne pas corrompre close_button_rect)
+    ei_rect_t visible_close_btn;
+    if (toplevel->closable && intersection_rect(&visible_close_btn, &toplevel->close_button_rect, &draw_rect))
     {
         draw_button(surface, &toplevel->close_button_rect, 2.0f, (ei_color_t)
         {
@@ -1079,14 +1081,15 @@ void toplevel_drawfunc(ei_widget_t widget, ei_surface_t surface, ei_surface_t pi
         };
         ei_color_t x_color = {0x00, 0x00, 0x00, 0xff};
         ei_point_t lines_x[] = {p1, p2, p3, p4};
-        ei_draw_polyline(surface, &lines_x[0], 2, x_color, &toplevel->close_button_rect);
-        ei_draw_polyline(surface, &lines_x[2], 2, x_color, &toplevel->close_button_rect);
+        ei_draw_polyline(surface, &lines_x[0], 2, x_color, &visible_close_btn);
+        ei_draw_polyline(surface, &lines_x[2], 2, x_color, &visible_close_btn);
     }
 
-    // Dessiner le contenu
-    if (intersection_rect(toplevel->widget.content_rect, toplevel->widget.content_rect, &draw_rect))
+    // Dessiner le contenu (utiliser une variable locale pour ne pas corrompre content_rect)
+    ei_rect_t visible_content;
+    if (intersection_rect(&visible_content, toplevel->widget.content_rect, &draw_rect))
     {
-        ei_fill(surface, &toplevel->color, toplevel->widget.content_rect);
+        ei_fill(surface, &toplevel->color, &visible_content);
     }
 
     // Dessiner les enfants
@@ -1097,14 +1100,18 @@ void toplevel_drawfunc(ei_widget_t widget, ei_surface_t surface, ei_surface_t pi
     }
 
     // Dessiner la poignée de redimensionnement en dernier pour qu'elle reste visible.
-    if (toplevel->resizable != ei_axis_none && intersection_rect(&toplevel->resize_handle_rect,
+    // Repaint aussi la pick surface pour que le resize handle soit cliquable même si
+    // un enfant couvre cette zone.
+    ei_rect_t visible_resize;
+    if (toplevel->resizable != ei_axis_none && intersection_rect(&visible_resize,
                                                                  &toplevel->resize_handle_rect, &draw_rect))
     {
+        ei_fill(pick_surface, &toplevel->widget.pick_color, &visible_resize);
         ei_color_t resize_color = (ei_color_t)
         {
             0x60, 0x60, 0xff, 0xff
         };
-        ei_fill(surface, &resize_color, &toplevel->resize_handle_rect);
+        ei_fill(surface, &resize_color, &visible_resize);
     }
 }
 

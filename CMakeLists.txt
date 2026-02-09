@@ -156,6 +156,10 @@ target_link_libraries(two048		ei ${PLATFORM_LIB_FLAGS})
 add_executable(minesweeper		${TEST_DIR}/minesweeper.c)
 target_link_libraries(minesweeper	ei ${PLATFORM_LIB_FLAGS})
 
+# target testclass (library for ext_testclass)
+
+add_library(testclass STATIC		${TEST_DIR}/testclass.c)
+
 # target ext_testclass
 
 add_executable(ext_testclass		${TEST_DIR}/ext_testclass.c)
