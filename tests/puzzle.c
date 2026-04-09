@@ -84,6 +84,10 @@ void randomize(puzzle_t* puzzle)
 	for (p = 0; p < n_positions; p++)
 		positions[p]		= p;
 
+	/* Clear the current grid — blank slot will stay NULL */
+	for (p = 0; p < puzzle->n.width * puzzle->n.height; p++)
+		puzzle->current[p] = NULL;
+
 	for (i = 0; i < n_tiles; i++) {
 		tile			= &(puzzle->tiles[i]);
 		position		= rand() % n_positions;
@@ -91,6 +95,9 @@ void randomize(puzzle_t* puzzle)
 		tile->current_position	= ei_point(positions[position] % puzzle->n.width, positions[position] / puzzle->n.height);
 		new_coords		= place_coordinates(tile->current_position);
 		ei_place_xy(tile->button, new_coords.x, new_coords.y);
+
+		/* Keep the logical grid consistent with the visual layout */
+		puzzle->current[index_at(puzzle, tile->current_position)] = tile;
 
 		for (p = position + 1; p < n_positions; p++)
 			positions[p-1]	= positions[p];

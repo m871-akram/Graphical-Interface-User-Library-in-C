@@ -226,9 +226,6 @@ ei_widget_t ei_widget_pick(ei_point_t* where)
     pixel_color.alpha = (ia >= 0) ? buffer[pixel_offset + ia] : 255; // Opaque si pas de canal alpha
 
 
-    printf("[PICK DEBUG] at (%d,%d): color RGBA=(%d,%d,%d,%d)\n", where->x, where->y, pixel_color.red,
-           pixel_color.green, pixel_color.blue, pixel_color.alpha);
-
     // Déverrouiller la surface
     hw_surface_unlock(pick_surface);
 

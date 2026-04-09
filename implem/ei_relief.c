@@ -24,7 +24,8 @@ ei_point_t* arc(ei_point_t centre, float rayon, float angle_deb, float angle_fin
 
     for (int i = 0; i <= n_segments; i++)
     {
-        float angle = angle_deb + (angle_fin - angle_deb) * i / (float)n_segments; // On avance petit à petit sur l'arc
+        float angle = (n_segments == 0) ? angle_deb
+                                        : angle_deb + (angle_fin - angle_deb) * i / (float)n_segments;
 
         int px = roundf(centre.x + rayon * cosf(angle));
         int py = roundf(centre.y + rayon * sinf(angle));
