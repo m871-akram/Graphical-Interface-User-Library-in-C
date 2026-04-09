@@ -42,9 +42,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e27fc836-d331-4e1a-a5c9-dfec16a33502" name="Changes" comment="Add implementation of custom &quot;testclass&quot; widget with margin support">
+    <list default="true" id="e27fc836-d331-4e1a-a5c9-dfec16a33502" name="Changes" comment="Add VSCode configuration files, cleanup debug logs, and improve puzzle grid and relief calculation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/implem/ei_relief.c" beforeDir="false" afterPath="$PROJECT_DIR$/implem/ei_relief.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BUGBUSTER.md" beforeDir="false" afterPath="$PROJECT_DIR$/BUGBUSTER.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/default.profraw" beforeDir="false" afterPath="$PROJECT_DIR$/default.profraw" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +61,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="678" />
+    <option name="cachedIndexableFilesCount" value="679" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-Coverage" />
@@ -94,47 +95,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ File.hello_world.c.executor": "Run",
-    "C/C++ File.scratch.c (1).executor": "Run",
-    "C/C++ File.scratch.c (2).executor": "Run",
-    "C/C++ File.scratch.c.executor": "Run",
-    "CMake Application.ext_testclass.executor": "Run",
-    "CMake Application.hello_world.executor": "Run",
-    "CMake Application.minesweeper.executor": "Run",
-    "CMake Application.puzzle.executor": "Run",
-    "CMake Application.two048.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/mohammedakramlrhorfi/CLionProjects/Graphical-Interface-User-Library-in-C",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "dynamic.analysis.tools.sanitizers",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/mohammedakramlrhorfi/Applications/CLion.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ File.hello_world.c.executor&quot;: &quot;Run&quot;,
+    &quot;C/C++ File.scratch.c (1).executor&quot;: &quot;Run&quot;,
+    &quot;C/C++ File.scratch.c (2).executor&quot;: &quot;Run&quot;,
+    &quot;C/C++ File.scratch.c.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.ext_testclass.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.hello_world.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.minesweeper.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.puzzle.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.two048.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mohammedakramlrhorfi/CLionProjects/Graphical-Interface-User-Library-in-C&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;dynamic.analysis.tools.sanitizers&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/mohammedakramlrhorfi/Applications/CLion.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1772528432460" />
     <option name="spentUsd" value="0.037732" />
@@ -142,24 +143,7 @@
   <component name="RecapUselessUpdatesCounter">
     <option name="suspendCountdown" value="8" />
   </component>
-  <component name="RunManager" selected="CMake Application.two048">
-    <configuration default="true" type="BIBTEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
-      <texify-bibtex>
-        <compiler />
-        <compiler-path />
-        <compiler-arguments />
-        <envs />
-        <main-file />
-        <aux-dir />
-        <latex-distribution>PROJECT_SDK</latex-distribution>
-      </texify-bibtex>
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="CMake Application.ext_testclass">
     <configuration name="ext_testclass" type="CMakeRunConfiguration" factoryName="Application" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ProjetC_IG" TARGET_NAME="ext_testclass" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ProjetC_IG" RUN_TARGET_NAME="ext_testclass">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -205,6 +189,30 @@
       </texify-external>
       <method v="2" />
     </configuration>
+    <configuration default="true" type="LATEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
+      <texify>
+        <compiler>PDFLATEX</compiler>
+        <compiler-path />
+        <pdf-viewer>system-default</pdf-viewer>
+        <require-focus>true</require-focus>
+        <viewer-command />
+        <compiler-arguments />
+        <envs />
+        <expand-macros-in-environment-variables>false</expand-macros-in-environment-variables>
+        <before-run-command />
+        <main-file />
+        <output-path>{projectDir}/out</output-path>
+        <auxil-path>{projectDir}/auxil</auxil-path>
+        <working-directory>{mainFileParent}</working-directory>
+        <compile-twice>false</compile-twice>
+        <output-format>PDF</output-format>
+        <latex-distribution>MODULE_SDK</latex-distribution>
+        <has-been-run>false</has-been-run>
+        <bib-run-config>[]</bib-run-config>
+        <makeindex-run-config>[]</makeindex-run-config>
+      </texify>
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="MAKEINDEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
       <texify-makeindex>
         <program>MAKEINDEX</program>
@@ -225,11 +233,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="CMake Application.ext_testclass" />
+        <item itemvalue="CMake Application.puzzle" />
         <item itemvalue="CMake Application.two048" />
         <item itemvalue="CMake Application.minesweeper" />
         <item itemvalue="CMake Application.hello_world" />
-        <item itemvalue="CMake Application.puzzle" />
-        <item itemvalue="CMake Application.ext_testclass" />
       </list>
     </recent_temporary>
   </component>
@@ -248,7 +256,8 @@
       <workItem from="1770578556451" duration="265000" />
       <workItem from="1770581936332" duration="768000" />
       <workItem from="1770621609589" duration="2644000" />
-      <workItem from="1775596097610" duration="2757000" />
+      <workItem from="1775596097610" duration="6807000" />
+      <workItem from="1775716409036" duration="871000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial project files and update test log timestamps">
       <option name="closed" value="true" />
@@ -282,7 +291,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770624641825</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add VSCode configuration files, cleanup debug logs, and improve puzzle grid and relief calculation">
+      <option name="closed" value="true" />
+      <created>1775716103521</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1775716103521</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,7 +315,8 @@
     <MESSAGE value="Add initial project files and update test log timestamps" />
     <MESSAGE value="Update CMakeLists.txt for Homebrew support on MacOS" />
     <MESSAGE value="Add implementation of custom &quot;testclass&quot; widget with margin support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add implementation of custom &quot;testclass&quot; widget with margin support" />
+    <MESSAGE value="Add VSCode configuration files, cleanup debug logs, and improve puzzle grid and relief calculation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add VSCode configuration files, cleanup debug logs, and improve puzzle grid and relief calculation" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="../../../../CLionProjects/Graphical-Interface-User-Library-in-C/cmake-build-debug-coverage" NAME="hello_world Coverage Results" MODIFIED="1770624217696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

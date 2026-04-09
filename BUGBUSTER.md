@@ -39,6 +39,26 @@ This ensures the resize handle area always maps back to the toplevel widget for 
 
 ---
 
+## Bug #4: Puzzle tiles do not move when clicked
+
+**Test:** `puzzle`
+
+**Symptom:** Clicking a puzzle tile does nothing — tiles never swap with the empty slot.
+
+**Root Cause:** In `create_puzzle_window` (`tests/puzzle.c`), the button callback's `user_param` was set to `(void*)&tile` instead of `(void*)tile`. Since `tile` is a local `tile_t*` variable, `&tile` is a `tile_t**` pointing to a stack location that no longer exists after `create_puzzle_window` returns. Every subsequent call to `handle_tile_press` read from that dangling stack address, getting garbage instead of the real `tile_t*`, so the move logic never executed correctly.
+
+**Fix:** Changed the argument from `(void*)&tile` to `(void*)tile` in `tests/puzzle.c:188`:
+
+```c
+// Before (bug):
+ei_button_configure(..., &callback, (void*)&tile);
+
+// After (fix):
+ei_button_configure(..., &callback, (void*)tile);
+```
+
+---
+
 ## Bug #3: Missing `testclass` widget class for `ext_testclass` test
 
 **Test:** `ext_testclass`
