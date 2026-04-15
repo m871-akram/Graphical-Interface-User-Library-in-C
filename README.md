@@ -1,8 +1,7 @@
-#  ProjetC_IG — Graphical Interface Library in C
+#  Projet-C : Graphical Interface Library in C
 
 A lightweight, cross-platform GUI library written in C for building graphical user interfaces.
 This project provides a complete toolkit for creating windows, widgets, drawing, and handling user interactions :
-
 
 
 - Cross-platform backend (macOS, Windows, X11/Linux)
@@ -45,14 +44,11 @@ Platform notes (as used by CMakeLists):
 - macOS: headers expected under `/opt/local/include` and `/opt/local/include/SDL2`; libraries usually in `/opt/local/lib` (MacPorts). Xcode CLT required.
 - Linux: headers under `/usr/include/SDL2`; link with `-lm`. Install packages e.g. on Debian/Ubuntu: `sudo apt-get install libsdl2-dev libsdl2-ttf-dev libfreeimage-dev`.
 - Windows: CMake references `C:/projetc/SDL2_windows` for SDL2 and FreeImage.
-   - TODO: Document the exact Windows setup steps and provide prebuilt/links.
 
 ---
 
 
 ##  Build and Run
-
-Out-of-source builds are strongly recommended. You can use CLion (preferred) or plain CMake.
 
 - CLion: open the project, select a target (e.g., `minimal`) and run/debug.
 - Plain CMake:
@@ -77,8 +73,6 @@ cmake --build . --target minimal
 # Run the executable (path from your build dir)
 ./minimal
 ```
--  Évitez d’exécuter cmake depuis la racine du dépôt car cela peut générer beaucoup de fichiers. Utilisez un répertoire de build séparé (p. ex. `build/`) ou laissez CLion s’en charger. Le répertoire `cmake/` contient des fichiers auxiliaires pour CMake.
-
 
 ---
 
@@ -122,15 +116,7 @@ Library:
 
 ##  Documentation
 
-Generate the API documentation using Doxygen (config at `docs/doxygen.cfg`). From project root:
-
-```bash
-cmake --build <build_dir> --target doc
-# or directly
-( cd docs && doxygen doxygen.cfg )
-```
-
-Output will be available at:
+Generate the API documentation using Doxygen (config at `docs/doxygen.cfg`). Output will be available at:
 - docs/html/index.html (HTML)
 - docs/latex (LaTeX)
 
