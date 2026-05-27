@@ -1,76 +1,182 @@
-# BUGBUSTER - Bug Tracking & Resolution Log
+# BUGBUSTER — Bug Tracking & Resolution Log
 
-## Bug #1: Toplevel freezes when dragged outside the window
-
-**Test:** `hello_world`
-
-**Symptom:** Moving the toplevel window to the left and outside the application window causes the program to freeze and become unresponsive.
-
-**Root Cause:** In `toplevel_drawfunc` (`implem/ei_widget_configure.c`), four calls to `intersection_rect` were using the toplevel's stored rectangles as both input and output:
-
-```c
-intersection_rect(&toplevel->title_bar_rect, &toplevel->title_bar_rect, &draw_rect);
-intersection_rect(&toplevel->close_button_rect, &toplevel->close_button_rect, &draw_rect);
-intersection_rect(toplevel->widget.content_rect, toplevel->widget.content_rect, &draw_rect);
-intersection_rect(&toplevel->resize_handle_rect, &toplevel->resize_handle_rect, &draw_rect);
-```
-
-Each redraw permanently shrank these rects to whatever portion was visible on-screen. When the toplevel moved off-screen, these rects collapsed to `{0,0,0,0}`. After releasing the mouse, `geomnotifyfunc` was no longer called, so the corrupted rects persisted — the title bar became un-clickable and the window appeared frozen.
-
-**Fix:** Replaced all four destructive `intersection_rect` calls with local temporary variables (`visible_title_bar`, `visible_close_btn`, `visible_content`, `visible_resize`). The drawing code now uses the temporaries for clipping/filling while the authoritative rects remain untouched.
+| # | Title | File | Severity |
+|---|-------|------|----------|
+| 1 | Toplevel freezes when dragged off-screen | `ei_widget_configure.c` | Critical |
+| 2 | Resize handle unclickable when children overlap it | `ei_widget_configure.c` | Critical |
+| 3 | Missing `testclass` widget class | `tests/testclass.c` (new) | Critical |
+| 4 | Puzzle tiles do not move | `tests/puzzle.c` | Critical |
+| 5 | Memory leaks on frame/toplevel destruction | `ei_widget_configure.c` | Critical |
+| 6 | Widget picking collides with >~19 widgets | `ei_widget.c` | Critical |
+| 7 | `ei_fill` crashes with `NULL` colour | `ei_draw.c` | Critical |
+| 8 | Wrong colours on macOS (typo in macro) | `ei_implementation.c` | High |
+| 9 | Frame children not drawn on full redraw | `ei_widget_configure.c` | High |
+| 10 | Clicking toplevel body captures all future events | `ei_widget_configure.c` | High |
+| 11 | Polygon scanline skips last row | `ei_implementation.c` | High |
+| 12 | `toplevel_allocfunc` crashes on alloc failure | `ei_widget_configure.c` | Medium |
+| 13 | Root widget creation violates API contract | `ei_application.c` | Design note |
+| 14 | Dangling pointer after toplevel close | `ei_application.c` | Design note |
+| 15 | Right-click flag never appears in minesweeper | `ei_widget_configure.c` | High |
+| 16 | Toplevel resists leftward dragging | N/A | Design note |
 
 ---
 
-## Bug #2: Toplevel resize handle not working
+## #1 — Toplevel freezes when dragged off-screen
 
-**Test:** `ext_testclass`, also affects any toplevel with children filling the content area
+**Test:** `hello_world`
 
-**Symptom:** Clicking and dragging the blue resize handle at the bottom-right corner of a toplevel does nothing.
+`toplevel_drawfunc` passed the toplevel's own stored rects as both input **and** output to `intersection_rect`, so every redraw permanently shrank them to the visible portion. When the window moved fully off-screen the rects collapsed to `{0,0,0,0}`, making the title bar un-clickable on return.
 
-**Root Cause:** The resize handle is positioned inside the toplevel's content area. Child widgets drawn within the content area paint their own `pick_color` on the pick surface, overwriting the toplevel's `pick_color` at the resize handle location. When the user clicks on the resize handle, `ei_widget_pick()` returns the child widget instead of the toplevel. Since the child has no `handlefunc`, the click goes unhandled and the resize never starts.
+**Fix:** Replaced the four aliased `intersection_rect` calls with local temporaries (`visible_title_bar`, `visible_close_btn`, `visible_content`, `visible_resize`). Authoritative rects are now read-only during drawing.
 
-**Fix:** In `toplevel_drawfunc`, the resize handle section now repaints the toplevel's `pick_color` on the pick surface **after** drawing children:
+---
 
+## #2 — Resize handle unclickable when children overlap it
+
+**Test:** `ext_testclass`
+
+Child widgets paint their `pick_color` over the resize handle area, so `ei_widget_pick` returns the child instead of the toplevel. The child has no drag handler, so the resize never starts.
+
+**Fix:** After drawing children, `toplevel_drawfunc` repaints the toplevel's `pick_color` over the resize handle rect on the pick surface:
 ```c
 ei_fill(pick_surface, &toplevel->widget.pick_color, &visible_resize);
 ```
 
-This ensures the resize handle area always maps back to the toplevel widget for picking, regardless of child overlap.
+---
+
+## #3 — Missing `testclass` widget class
+
+**Test:** `ext_testclass`
+
+`ext_testclass.c` referenced `testclass_register`, `testclass_configure`, and `testclass_get_margin` but no implementation existed, causing a link failure.
+
+**Fix:** Created `tests/testclass.c` — a container widget with a configurable margin. Its `content_rect` is `screen_location` inset by the margin on all sides. Updated `CMakeLists.txt` to build it as a static library.
 
 ---
 
-## Bug #4: Puzzle tiles do not move when clicked
+## #4 — Puzzle tiles do not move
 
 **Test:** `puzzle`
 
-**Symptom:** Clicking a puzzle tile does nothing — tiles never swap with the empty slot.
+`create_puzzle_window` passed `(void*)&tile` (address of a local `tile_t*`) as `user_param`. After the function returned, the pointer was dangling. `handle_tile_press` read garbage instead of the real tile pointer.
 
-**Root Cause:** In `create_puzzle_window` (`tests/puzzle.c`), the button callback's `user_param` was set to `(void*)&tile` instead of `(void*)tile`. Since `tile` is a local `tile_t*` variable, `&tile` is a `tile_t**` pointing to a stack location that no longer exists after `create_puzzle_window` returns. Every subsequent call to `handle_tile_press` read from that dangling stack address, getting garbage instead of the real `tile_t*`, so the move logic never executed correctly.
+**Fix:** `(void*)&tile` → `(void*)tile` at `tests/puzzle.c:188`.
 
-**Fix:** Changed the argument from `(void*)&tile` to `(void*)tile` in `tests/puzzle.c:188`:
+---
 
+## #5 — Memory leaks on frame/toplevel destruction
+
+**Test:** `hello_world`, `button`
+
+Three incomplete cleanup paths:
+- `frame_releasefunc` freed `img_rect` but not `frame->text` (`strdup`'d by `ei_frame_configure`).
+- `toplevel_releasefunc` was empty — `toplevel->title` and `content_rect` were never freed.
+- `ei_frame_configure`: assigning `NULL` to `frame->text` when setting an image skipped the required `free`.
+
+**Fix:** Added `free(frame->text)` in `frame_releasefunc` and before the `frame->text = NULL` assignment. Implemented `toplevel_releasefunc` to free `title` and (conditionally) `content_rect`.
+
+---
+
+## #6 — Widget picking collides with >~19 widgets
+
+**Test:** `minesweeper`, `two048`, `puzzle`
+
+`ei_widget_create` derived `pick_id` by truncating the heap pointer to `uint32_t`. With 16-byte allocator alignment the bottom 4 bits are always 0, leaving only ~19 effective bits of entropy. Collisions occur with a few hundred widgets.
+
+**Fix:** Replaced pointer-based IDs with a `static uint32_t g_pick_id_counter` starting at 1. All 24 RGB bits are now used uniformly, supporting up to 16 M unique widgets.
+
+---
+
+## #7 — `ei_fill` crashes with `NULL` colour
+
+**Test:** any
+
+`ei_fill` dereferenced `couleur` immediately despite `ei_draw.h` documenting that `NULL` means "paint opaque black".
+
+**Fix:** Added a NULL guard before `ei_impl_map_rgba`:
 ```c
-// Before (bug):
-ei_button_configure(..., &callback, (void*)&tile);
-
-// After (fix):
-ei_button_configure(..., &callback, (void*)tile);
+ei_color_t black = {0, 0, 0, 0xff};
+uint32_t val = ei_impl_map_rgba(surface, couleur ? *couleur : black);
 ```
 
 ---
 
-## Bug #3: Missing `testclass` widget class for `ext_testclass` test
+## #8 — Wrong colours on macOS
 
-**Test:** `ext_testclass`
+**Test:** any on macOS
 
-**Symptom:** The `ext_testclass` test fails to build — the `testclass` library it links against does not exist.
+`draw_line` and `draw_horizontal_line` in `ei_implementation.c` guarded the correct colour-mapping path with `#if defined(_APPLE_)`. The valid macro is `__APPLE__` (double underscores), so the guard was never true on macOS and colours were read from the wrong byte order.
 
-**Root Cause:** The test file `ext_testclass.c` references three external functions (`testclass_register`, `testclass_configure`, `testclass_get_margin`) and a widget class named `"testclass"`, but no implementation was provided.
+**Fix:** `_APPLE_` → `__APPLE__` in both functions (`replace_all`).
 
-**Fix:** Created `tests/testclass.c` implementing the `"testclass"` widget class — a container widget with a configurable margin property:
+---
 
-- `testclass_register()` — registers the class with the widget system
-- `testclass_configure(widget, margin)` — sets the margin and triggers geometry recalculation
-- `testclass_get_margin(widget)` — returns the current margin
+## #9 — Frame children not drawn on full redraw
 
-The widget draws a colored border (the margin area) around its content, and its `content_rect` is the `screen_location` inset by the margin on all sides. Updated `CMakeLists.txt` to build the `testclass` static library.
+**Test:** `hello_world`, `button`
+
+`frame_drawfunc` called `intersection_rect(&children_clipper, &content_area, clipper)` without a NULL guard. `intersection_rect` asserts all arguments non-NULL; passing `clipper = NULL` (full-surface draw) caused an assert or UB.
+
+**Fix:** When `clipper == NULL`, call `ei_impl_widget_draw_children` directly with `&content_area`.
+
+---
+
+## #10 — Clicking toplevel body captures all future events
+
+**Test:** `hello_world`, `button`
+
+A plain body click called `ei_event_set_active_widget(widget)` but the mouse-up handler only cleared the active widget if `was_dragging` was true. A body click set no drag flag, so the active widget was never cleared.
+
+**Fix:** Removed the `was_dragging` condition — `ei_event_set_active_widget(NULL)` is now unconditional on left mouse-up while the toplevel is active.
+
+---
+
+## #11 — Polygon scanline skips last row
+
+**Test:** `dessin_relief`, `button`
+
+`creer_table_tc` used `index < (y_max - y_min)` to guard edge-table insertion. The table has `y_max - y_min + 1` slots (indices 0 … `y_max - y_min`), so the strict `<` silently dropped all edges whose lower endpoint sits exactly at `y_max`.
+
+**Fix:** `index < (y_max - y_min)` → `index <= (y_max - y_min)`.
+
+---
+
+## #12 — `toplevel_allocfunc` crashes on alloc failure
+
+**Test:** any under memory pressure
+
+`calloc` and the subsequent `malloc` for `content_rect` were both unchecked. A NULL return from either caused an immediate NULL dereference on the next line.
+
+**Fix:** Added NULL checks with proper cleanup (free the toplevel if `content_rect` alloc fails) and early return of NULL.
+
+---
+
+## #13 — Root widget creation violates API contract *(design note)*
+
+`ei_application.c` creates the root widget with `parent = NULL`, which `ei_widget.h` documents as forbidden. No crash occurs because `ei_widget_create` silently skips parent attachment for NULL. The API doc comment should be updated to note that NULL is accepted only for the internal root widget.
+
+---
+
+## #14 — Dangling pointer after toplevel close *(design note)*
+
+When the close button is clicked, `toplevel_handlefunc` calls `ei_widget_destroy(widget)` and returns `true`. The event loop in `ei_application.c` holds a now-dangling `target_widget` pointer. No use-after-free occurs today because the loop does not touch `target_widget` after `handlefunc` returns — but any future change to the event loop must account for this.
+
+---
+
+## #15 — Right-click flag never appears in minesweeper
+
+**Test:** `minesweeper`
+
+`button_handlefunc` only processed `ei_mouse_button_left` in `ei_ev_mouse_buttondown`. Right-clicks within bounds set `event_handled = true` but never called the callback. `cell_button_handler` (which calls `switch_flag()` on right-click) was therefore never reached.
+
+**Fix:** Added an `else if` for non-left clicks inside the bounds check:
+```c
+else if (button->callback != NULL)
+    button->callback(widget, event, button->user_param);
+```
+
+---
+
+## #16 — Toplevel resists leftward dragging *(design note)*
+
+Not a code bug. The drag formula `new_x = start_x + (mouse.x - drag_start.x)` is unconstrained. The perceived limit comes from the physical screen: the SDL window typically opens at the screen's top-left corner (x = 0), so the cursor cannot report values below 0 regardless of how far the user moves left. Rightward/downward movement has more room because the physical screen extends beyond the 800 × 600 window in those directions. A fix would require `SDL_SetRelativeMouseMode` during drags, which `hw_interface` does not expose.

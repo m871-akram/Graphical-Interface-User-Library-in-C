@@ -84,6 +84,7 @@ void ei_frame_configure(ei_widget_t widget,
     }
     if (img != NULL)
     {
+        free(frame->text);
         frame->img = *img;
         frame->text = NULL;
         geometry_changed = true;
@@ -154,6 +155,8 @@ void frame_releasefunc(ei_widget_t widget)
 {
     ei_impl_frame_t* frame = (ei_impl_frame_t*)widget;
 
+    free(frame->text);
+    frame->text = NULL;
     if (frame->img_rect != NULL)
     {
         free(frame->img_rect);
@@ -251,7 +254,11 @@ void frame_drawfunc(ei_widget_t widget, ei_surface_t surface, ei_surface_t pick_
 
     // Dessiner les enfants
     ei_rect_t children_clipper;
-    if (intersection_rect(&children_clipper, &content_area, clipper))
+    if (clipper == NULL)
+    {
+        ei_impl_widget_draw_children(widget, surface, pick_surface, &content_area);
+    }
+    else if (intersection_rect(&children_clipper, &content_area, clipper))
     {
         ei_impl_widget_draw_children(widget, surface, pick_surface, &children_clipper);
     }
@@ -466,7 +473,6 @@ void ei_button_configure(ei_widget_t widget, ei_size_t* requested_size, const ei
 
         if (button->text != NULL && button->text_font != NULL)
         {
-            assert(button->text_font != NULL); // Devrait être initialisé par setdefaults ou paramètre
             int text_w, text_h;
             hw_text_compute_size(button->text, button->text_font, &text_w, &text_h);
             natural_content_size.width = text_w;
@@ -592,7 +598,6 @@ void button_drawfunc(ei_widget_t widget, ei_surface_t surface, ei_surface_t pick
     // 5. Dessiner le texte (dans widget_content_rect, clippé par content_clipper)
     if (button->text != NULL && strlen(button->text) > 0 && button->text_font != NULL)
     {
-        assert(button->text_font != NULL);
         int text_width, text_height;
         hw_text_compute_size(button->text, button->text_font, &text_width, &text_height);
         ei_point_t text_pos;
@@ -724,15 +729,21 @@ bool button_handlefunc(ei_widget_t widget, ei_event_t* event)
     switch (event->type)
     {
     case ei_ev_mouse_buttondown:
-        if (event->param.mouse.button == ei_mouse_button_left &&
-            point_in_rect(event->param.mouse.where, screen_loc))
+        if (point_in_rect(event->param.mouse.where, screen_loc))
         {
-            bool was_pressed = button->is_pressed;
-            button->is_pressed = true;
-            ei_event_set_active_widget(widget);
-            if (!was_pressed)
+            if (event->param.mouse.button == ei_mouse_button_left)
             {
-                ei_app_invalidate_rect(screen_loc);
+                bool was_pressed = button->is_pressed;
+                button->is_pressed = true;
+                ei_event_set_active_widget(widget);
+                if (!was_pressed)
+                {
+                    ei_app_invalidate_rect(screen_loc);
+                }
+            }
+            else if (button->callback != NULL)
+            {
+                button->callback(widget, event, button->user_param);
             }
             event_handled = true;
         }
@@ -875,7 +886,10 @@ void ei_toplevel_configure(ei_widget_t widget,
     }
     if (min_size != NULL)
     {
-        toplevel->min_size = **min_size;
+        if (*min_size != NULL)
+            toplevel->min_size = **min_size;
+        else
+            toplevel->min_size = ei_size(160, 120);
     }
 
 
@@ -888,8 +902,10 @@ void ei_toplevel_configure(ei_widget_t widget,
 ei_widget_t toplevel_allocfunc(void)
 {
     ei_impl_toplevel_t* toplevel = calloc(1, sizeof(ei_impl_toplevel_t));
+    if (!toplevel) return NULL;
 
     toplevel->widget.content_rect = malloc(sizeof(ei_rect_t));
+    if (!toplevel->widget.content_rect) { free(toplevel); return NULL; }
 
     *toplevel->widget.content_rect = ei_rect_zero();
     return (ei_widget_t)toplevel;
@@ -899,7 +915,15 @@ void toplevel_releasefunc(ei_widget_t widget)
 {
     ei_impl_toplevel_t* toplevel = (ei_impl_toplevel_t*)widget;
 
-    (void)toplevel; // unused if no frees
+    free(toplevel->title);
+    toplevel->title = NULL;
+    // ei_placer_forget already frees content_rect and resets it to &screen_location
+    // when the widget was placed. Only free here if it is still the original malloc'd ptr.
+    if (toplevel->widget.content_rect != &toplevel->widget.screen_location)
+    {
+        free(toplevel->widget.content_rect);
+        toplevel->widget.content_rect = NULL;
+    }
 }
 
 static void toplevel_geomnotifyfunc(ei_widget_t widget)
@@ -1229,13 +1253,9 @@ bool toplevel_handlefunc(ei_widget_t widget, ei_event_t* event)
     case ei_ev_mouse_buttonup:
         if (ei_event_get_active_widget() == widget && event->param.mouse.button == ei_mouse_button_left)
         {
-            bool was_dragging = toplevel->is_moving || toplevel->is_resizing;
             toplevel->is_moving = false;
             toplevel->is_resizing = false;
-            if (was_dragging)
-            {
-                ei_event_set_active_widget(NULL);
-            }
+            ei_event_set_active_widget(NULL);
             ei_app_invalidate_rect(&toplevel->widget.screen_location);
             event_handled = true;
         }

@@ -32,11 +32,11 @@ ei_widget_t ei_widget_create(ei_const_string_t class_name, ei_widget_t parent, e
     // Initialiser les champs communs
     ei_impl_widget_t* impl_widget = (ei_impl_widget_t*)widget;
     impl_widget->wclass = wclass;
-    impl_widget->pick_id = (uint32_t)(intptr_t)
-    widget; // Utiliser l'adresse comme ID unique
-    impl_widget->pick_color.red = (uint8_t)((impl_widget->pick_id & 0x00FF0000) >> 16);
+    static uint32_t g_pick_id_counter = 1;
+    impl_widget->pick_id = g_pick_id_counter++;
+    impl_widget->pick_color.red   = (uint8_t)((impl_widget->pick_id & 0x00FF0000) >> 16);
     impl_widget->pick_color.green = (uint8_t)((impl_widget->pick_id & 0x0000FF00) >> 8);
-    impl_widget->pick_color.blue = (uint8_t)((impl_widget->pick_id & 0x000000FF));
+    impl_widget->pick_color.blue  = (uint8_t)((impl_widget->pick_id & 0x000000FF));
     impl_widget->pick_color.alpha = 0xff; // Opaque pour le picking
     impl_widget->user_data = user_data;
     impl_widget->destructor = destructor;

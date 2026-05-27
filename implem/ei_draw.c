@@ -4,6 +4,8 @@
 #include "ei_utils.h"
 #include <stdint.h>
 #include <assert.h>
+#include <string.h>
+#include <math.h>
 
 // Cette fonction remplit une zone avec une couleur (comme si on peignait un mur !)
 void ei_fill(ei_surface_t surface, const ei_color_t* couleur, const ei_rect_t* clipper)
@@ -13,7 +15,8 @@ void ei_fill(ei_surface_t surface, const ei_color_t* couleur, const ei_rect_t* c
     ei_size_t taille_surface = hw_surface_get_size(surface);
 
     // Convertir la couleur selon l'ordre des canaux de la surface (toujours via map_rgba pour éviter les erreurs de canaux/alpha)
-    uint32_t valeur_pixel = ei_impl_map_rgba(surface, *couleur);
+    ei_color_t black = {0, 0, 0, 0xff};
+    uint32_t valeur_pixel = ei_impl_map_rgba(surface, couleur ? *couleur : black);
 
     // On définit la zone qu'on va remplir (le clipper, c'est comme une fenêtre où on a le droit de peindre)
     int clip_xmin = 0, clip_ymin = 0, clip_xmax = taille_surface.width - 1, clip_ymax = taille_surface.height - 1;
@@ -197,9 +200,6 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, ei_const_string
     assert(surface != NULL && "Surface cannot be NULL");
     assert(where != NULL && "Position cannot be NULL");
     assert(text != NULL && "Text cannot be NULL");
-    assert(color.red != 255 || color.green != 255 || color.blue != 255 || "Color cannot be NULL");
-
-
     ei_font_t font_used = font ? font : ei_default_font;
     if (font_used == NULL)
     {

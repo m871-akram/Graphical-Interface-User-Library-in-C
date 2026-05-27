@@ -18,6 +18,7 @@ ei_point_t* arc(ei_point_t centre, float rayon, float angle_deb, float angle_fin
     int n_segments = (int)ceilf(rayon * arc_angle); // On découpe l'arc en petits morceaux
 
     ei_point_t* tab_points = malloc((n_segments + 1) * sizeof(ei_point_t));
+    if (!tab_points) { *count = 0; return NULL; }
 
     int uniq_x = -1, uniq_y = -1; // On garde un œil sur le dernier point pour pas le répéter
     int c = 0;
@@ -43,7 +44,10 @@ ei_point_t* arc(ei_point_t centre, float rayon, float angle_deb, float angle_fin
 
     *count = c; // On dit combien de points on a gardés
 
-    return realloc(tab_points, (c + 1) * sizeof(ei_point_t)); // On ajuste la taille du tableau, nickel
+    if (c == 0) { free(tab_points); *count = 0; return NULL; }
+    ei_point_t* result = realloc(tab_points, (c + 1) * sizeof(ei_point_t));
+    if (!result) { free(tab_points); *count = 0; return NULL; }
+    return result;
 }
 
 ei_point_t* rounded_frame(ei_rect_t* rect, float rayon, size_t* count, ei_frame_part_t part)
@@ -133,25 +137,39 @@ ei_point_t* rounded_frame(ei_rect_t* rect, float rayon, size_t* count, ei_frame_
         total_seg_coins = n_seg_coins[0] + n_seg_coins[1] + n_seg_coins[2] + 2; // Encore 2 points pour les lignes
     }
 
-    ei_point_t* frame = malloc(total_seg_coins * sizeof(ei_point_t)); // On réserve la place pour le cadre
+    if (total_seg_coins == 0) {
+        for (int i = 0; i < n_arcs; i++) free(segment_coin[i]);
+        *count = 0;
+        return NULL;
+    }
+
+    ei_point_t* frame = malloc(total_seg_coins * sizeof(ei_point_t));
+    if (!frame) {
+        for (int i = 0; i < n_arcs; i++) free(segment_coin[i]);
+        *count = 0;
+        return NULL;
+    }
 
     size_t offset = 0;
     for (int i = 0; i < n_arcs; i++)
     {
         if (segment_coin[i] && n_seg_coins[i] > 0)
         {
-            for (int j = 0; j < n_seg_coins[i]; j++)
+            for (int j = 0; j < (int)n_seg_coins[i]; j++)
             {
-                frame[offset + j] = segment_coin[i][j]; // On copie les points
+                frame[offset + j] = segment_coin[i][j];
             }
-            offset += n_seg_coins[i]; // On avance dans le tableau
+            offset += n_seg_coins[i];
         }
-        free(segment_coin[i]); // On libère la mémoire, faut pas oublier !
+        free(segment_coin[i]);
     }
 
     *count = offset;
 
-    return realloc(frame, offset * sizeof(ei_point_t)); // On ajuste la taille du tableau, propre !
+    if (offset == 0) { free(frame); return NULL; }
+    ei_point_t* result = realloc(frame, offset * sizeof(ei_point_t));
+    if (!result) { free(frame); return NULL; }
+    return result;
 }
 
 
