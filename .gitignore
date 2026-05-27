@@ -1,0 +1,27 @@
+# Build directories
+cmake/
+build/
+out/
+
+# IDE files
+.idea/
+.vscode/
+
+# CLion IDE
+clion/.idea/
+
+# Doxygen generated output
+docs/html/
+docs/latex/
+
+# Profiling data
+*.profraw
+*.profdata
+
+# Compiled objects and binaries
+*.o
+*.out
+*.exe
+
+# macOS
+.DS_Store

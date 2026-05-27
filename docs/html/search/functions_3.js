@@ -1,6 +1,0 @@
-var searchData=
-[
-  ['draw_5fbutton_0',['draw_button',['../ei__relief_8c.html#ad0f2769d85af5335f62f5b33b623879c',1,'draw_button(ei_surface_t surface, ei_rect_t *rect, float rayon, ei_color_t color, ei_relief_t etat):&#160;ei_relief.c'],['../ei__relief_8h.html#ad0f2769d85af5335f62f5b33b623879c',1,'draw_button(ei_surface_t surface, ei_rect_t *rect, float rayon, ei_color_t color, ei_relief_t etat):&#160;ei_relief.c']]],
-  ['draw_5fhorizontal_5fline_1',['draw_horizontal_line',['../ei__implementation_8c.html#ad6f5451ca67bfbe59a6b58f42e56001e',1,'draw_horizontal_line(ei_surface_t surface, int x1, int x2, int y, ei_color_t couleur, const ei_rect_t *clipper):&#160;ei_implementation.c'],['../ei__implementation_8h.html#ad6f5451ca67bfbe59a6b58f42e56001e',1,'draw_horizontal_line(ei_surface_t surface, int x1, int x2, int y, ei_color_t couleur, const ei_rect_t *clipper):&#160;ei_implementation.c']]],
-  ['draw_5fline_2',['draw_line',['../ei__implementation_8c.html#a77fa3367648728e01412c1cdbabf92d4',1,'draw_line(ei_surface_t surface, ei_point_t point_1, ei_point_t point_2, ei_color_t couleur, const ei_rect_t *clipper):&#160;ei_implementation.c'],['../ei__implementation_8h.html#a77fa3367648728e01412c1cdbabf92d4',1,'draw_line(ei_surface_t surface, ei_point_t point_1, ei_point_t point_2, ei_color_t couleur, const ei_rect_t *clipper):&#160;ei_implementation.c']]]
-];
