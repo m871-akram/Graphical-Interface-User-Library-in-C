@@ -1,25 +1,4 @@
-# BUGBUSTER — Bug Tracking & Resolution Log
-
-| # | Title | File | Severity |
-|---|-------|------|----------|
-| 1 | Toplevel freezes when dragged off-screen | `ei_widget_configure.c` | Critical |
-| 2 | Resize handle unclickable when children overlap it | `ei_widget_configure.c` | Critical |
-| 3 | Missing `testclass` widget class | `tests/testclass.c` (new) | Critical |
-| 4 | Puzzle tiles do not move | `tests/puzzle.c` | Critical |
-| 5 | Memory leaks on frame/toplevel destruction | `ei_widget_configure.c` | Critical |
-| 6 | Widget picking collides with >~19 widgets | `ei_widget.c` | Critical |
-| 7 | `ei_fill` crashes with `NULL` colour | `ei_draw.c` | Critical |
-| 8 | Wrong colours on macOS (typo in macro) | `ei_implementation.c` | High |
-| 9 | Frame children not drawn on full redraw | `ei_widget_configure.c` | High |
-| 10 | Clicking toplevel body captures all future events | `ei_widget_configure.c` | High |
-| 11 | Polygon scanline skips last row | `ei_implementation.c` | High |
-| 12 | `toplevel_allocfunc` crashes on alloc failure | `ei_widget_configure.c` | Medium |
-| 13 | Root widget creation violates API contract | `ei_application.c` | Design note |
-| 14 | Dangling pointer after toplevel close | `ei_application.c` | Design note |
-| 15 | Right-click flag never appears in minesweeper | `ei_widget_configure.c` | High |
-| 16 | Toplevel resists leftward dragging | N/A | Design note |
-
----
+# BUGBUSTER — Bug Tracking 
 
 ## #1 — Toplevel freezes when dragged off-screen
 
