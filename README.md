@@ -45,14 +45,6 @@ A lightweight, cross-platform GUI toolkit written in C. It provides a widget sys
 |----------|----------|-----------|
 | Linux (X11) | GCC / Clang | `libsdl2-dev libsdl2-ttf-dev libfreeimage-dev` |
 | macOS | Clang + Xcode CLT | SDL2, SDL2_ttf, FreeImage via MacPorts (`/opt/local`) |
-| Windows | MSVC / MinGW | SDL2 + FreeImage under `C:/projetc/SDL2_windows` |
-
-CMake ≥ 3.20 is required.
-
-**Linux quick-install:**
-```bash
-sudo apt-get install cmake libsdl2-dev libsdl2-ttf-dev libfreeimage-dev
-```
 
 ---
 
@@ -74,8 +66,6 @@ cmake --build cmake --target lines dessin_relief la_souris_verte test_d_sor3a ex
 # Generate Doxygen documentation
 cmake --build cmake --target doc
 ```
-
-> **Stale cache warning:** if you previously built on a different machine (e.g. macOS → Linux), delete the `cmake/` directory and re-run `cmake -B cmake .` before building.
 
 ---
 
@@ -104,7 +94,7 @@ Press **Escape** or close the window to quit any demo.
 
 ## API Quick Reference
 
-All public headers live in `api/`. Your application only needs to include from there.
+All public headers live in `api/`. The application only needs to include from there.
 
 | Header | Purpose |
 |--------|---------|
@@ -147,10 +137,6 @@ int main(void) {
 }
 ```
 
-### Implementing a custom widget class
-
-Implement the six function pointers in `ei_widgetclass_t` (allocfunc, releasefunc, drawfunc, setdefaultsfunc, geomnotifyfunc, handlefunc) and call `ei_widgetclass_register`. See `tests/testclass.c` for a complete example.
-
 ---
 
 ## Documentation
@@ -159,9 +145,5 @@ Implement the six function pointers in `ei_widgetclass_t` (allocfunc, releasefun
 cmake --build cmake --target doc
 # Open docs/html/index.html in a browser
 ```
-
----
-
-## Bug Tracking
 
 Known bugs, root-cause analyses, and fixes are logged in [`BUGBUSTER.md`](BUGBUSTER.md).
