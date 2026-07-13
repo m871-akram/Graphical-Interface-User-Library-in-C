@@ -12,12 +12,9 @@ void draw_line(ei_surface_t surface, ei_point_t point_1, ei_point_t point_2, ei_
     uint8_t* pixel_0 = hw_surface_get_buffer(surface);
     ei_size_t taille_surface = hw_surface_get_size(surface);
 
-    // On convertit la couleur en un format que la surface comprend (ça dépend si t'es sur Mac, Windows ou Linux)
-#if defined(__APPLE__) || defined(_WIN32)
+    // Toujours convertir via map_rgba : l'ordre des canaux depend de la surface,
+    // pas de la plateforme (un cast brut inverse R/B selon l'ordre choisi par eibase).
     uint32_t valeur_pixel = ei_impl_map_rgba(surface, couleur);
-#else
-    uint32_t valeur_pixel = *((uint32_t*)&couleur);
-#endif
 
     // On définit une zone où on a le droit de dessiner (le "clipper")
     int clip_xmin = 0, clip_ymin = 0, clip_xmax = taille_surface.width - 1, clip_ymax = taille_surface.height - 1;
@@ -113,12 +110,8 @@ void draw_horizontal_line(ei_surface_t surface, int x1, int x2, int y, ei_color_
     uint8_t* pixel_0 = hw_surface_get_buffer(surface);
     ei_size_t taille_surface = hw_surface_get_size(surface);
 
-    // On convertit la couleur (pareil, ça dépend de la plateforme)
-#if defined(__APPLE__) || defined(_WIN32)
+    // Toujours via map_rgba (voir draw_line : l'ordre des canaux vient de la surface)
     uint32_t valeur_pixel = ei_impl_map_rgba(surface, couleur);
-#else
-    uint32_t valeur_pixel = *((uint32_t*)&couleur);
-#endif
 
     // On définit la zone où on peut dessiner
     int clip_xmin = 0, clip_xmax = taille_surface.width - 1, clip_ymin = 0, clip_ymax = taille_surface.height - 1;
