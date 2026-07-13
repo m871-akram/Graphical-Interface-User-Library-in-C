@@ -152,9 +152,16 @@ void ei_widget_destroy(ei_widget_t widget)
         impl_widget->wclass->releasefunc(widget);
     }
 
-    // Ne pas libérer impl_widget->content_rect ici : il n'est pas toujours alloué dynamiquement
-    // et peut pointer vers screen_location ou une zone interne d'un widget spécialisé (ex: toplevel).
-    // La libération spécifique doit être gérée par la releasefunc de la classe si nécessaire.
+    // Filet de sécurité pour content_rect : s'il ne pointe pas vers screen_location,
+    // il a été alloué dynamiquement (toplevel_allocfunc ou ei_widget_set_content_rect).
+    // Une releasefunc qui le libère elle-même (ex: toplevel) le remet à NULL,
+    // donc pas de double libération ici.
+    if (impl_widget->content_rect != NULL &&
+        impl_widget->content_rect != &impl_widget->screen_location)
+    {
+        free(impl_widget->content_rect);
+        impl_widget->content_rect = NULL;
+    }
 
     // Libérer la mémoire du widget
     free(widget);

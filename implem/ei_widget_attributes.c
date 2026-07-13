@@ -86,9 +86,15 @@ void ei_widget_set_content_rect(ei_widget_t widget, const ei_rect_t* content_rec
     assert(widget != NULL && content_rect != NULL);
     ei_impl_widget_t* impl_widget = widget;
     // Si content_rect pointe déjà vers screen_location, allouer un nouveau rectangle
+    // (libéré par le filet de sécurité de ei_widget_destroy)
     if (impl_widget->content_rect == &impl_widget->screen_location || impl_widget->content_rect == NULL)
     {
-        impl_widget->content_rect = malloc(sizeof(ei_rect_t));
+        ei_rect_t* new_rect = malloc(sizeof(ei_rect_t));
+        if (new_rect == NULL)
+        {
+            return; // Allocation échouée : on conserve l'ancien content_rect
+        }
+        impl_widget->content_rect = new_rect;
     }
     // Copier le nouveau rectangle
     *impl_widget->content_rect = *content_rect;

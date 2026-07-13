@@ -917,8 +917,9 @@ void toplevel_releasefunc(ei_widget_t widget)
 
     free(toplevel->title);
     toplevel->title = NULL;
-    // ei_placer_forget already frees content_rect and resets it to &screen_location
-    // when the widget was placed. Only free here if it is still the original malloc'd ptr.
+    // Le toplevel possède son content_rect (alloué dans toplevel_allocfunc).
+    // On le libère ici et on le met à NULL pour que le filet de sécurité
+    // de ei_widget_destroy ne le libère pas une seconde fois.
     if (toplevel->widget.content_rect != &toplevel->widget.screen_location)
     {
         free(toplevel->widget.content_rect);

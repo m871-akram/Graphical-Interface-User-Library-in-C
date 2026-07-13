@@ -210,9 +210,8 @@ void ei_placer_forget(ei_widget_t widget)
 
 
     impl_widget->screen_location = ei_rect_zero();
-    if (impl_widget->content_rect != &impl_widget->screen_location)
-    {
-        free(impl_widget->content_rect);
-        impl_widget->content_rect = &impl_widget->screen_location;
-    }
+    // Ne PAS libérer content_rect ici : "forget" retire le widget de l'écran,
+    // il ne détruit pas sa géométrie de contenu. Un toplevel oublié puis re-placé
+    // écrirait sinon, via geomnotify, dans sa propre screen_location (corruption).
+    // La libération appartient à ei_widget_destroy / à la releasefunc de la classe.
 }
